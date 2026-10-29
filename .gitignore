@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.log
+
+data/*
+!data/README.md
+!data/PACKAGE_README.md
+!data/ritcf_recon/
+data/ritcf_recon/*
+!data/ritcf_recon/ACQUIRE.md

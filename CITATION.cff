@@ -1,0 +1,76 @@
+cff-version: 1.2.0
+message: "If you use this software or the accompanying data record, please cite both the article and the release."
+title: "CausalVisionRI: causal-prior-constrained deep learning for 24-h rapid-intensification warning in the western North Pacific"
+abstract: >-
+  Source code and derived data record for a 24-h rapid-intensification (RI)
+  warning system for western North Pacific tropical cyclones. The system fuses
+  satellite infrared imagery, ERA5 environmental fields and a causal graph
+  discovered from the observations (masked PCMCI+ on the 2000-2017 fit split),
+  and constrains training with the discovered structure and eight
+  sign-verified causal effects. Evaluation follows a frozen, leakage-protected
+  holdout (fit 2000-2017 / inner 2018-2019 / test 2020-2024, 3,004 test rows)
+  with a re-issuable protocol lock and an append-only test receipt.
+type: software
+version: "1.0.0"
+date-released: "2026-10-28"
+repository-code: "https://github.com/Clrs17/CausalVisionRI"
+url: "https://zenodo.org/records/23768442"
+license: MIT
+license-url: "https://opensource.org/licenses/MIT"
+keywords:
+  - tropical cyclone
+  - rapid intensification
+  - causal inference
+  - PCMCI+
+  - deep learning
+  - satellite infrared
+  - western North Pacific
+authors:
+  - family-names: "Li"
+    given-names: "Xinrui"
+    affiliation: "Department of Atmospheric Sciences, School of Earth Sciences, Zhejiang University, Hangzhou, 310058, China"
+  - family-names: "Jin"
+    given-names: "Yijun"
+    affiliation: "Department of Atmospheric Sciences, School of Earth Sciences, Zhejiang University, Hangzhou, 310058, China"
+  - family-names: "Dong"
+    given-names: "Yifan"
+    affiliation: "School of Mathematical Sciences, Zhejiang University, Hangzhou, 310058, China"
+  - family-names: "Shu"
+    given-names: "Shoujuan"
+    affiliation: "Department of Atmospheric Sciences, School of Earth Sciences, Zhejiang University, Hangzhou, 310058, China"
+    email: "sjshu@zju.edu.cn"
+    corresponding: true
+contact:
+  - family-names: "Shu"
+    given-names: "Shoujuan"
+    email: "sjshu@zju.edu.cn"
+    affiliation: "Department of Atmospheric Sciences, School of Earth Sciences, Zhejiang University, Hangzhou, 310058, China"
+preferred-citation:
+  type: article
+  title: "Causal-prior-constrained deep learning for rapid-intensification warning of western North Pacific tropical cyclones"
+  year: 2026
+  authors:
+    - family-names: "Li"
+      given-names: "Xinrui"
+    - family-names: "Jin"
+      given-names: "Yijun"
+    - family-names: "Dong"
+      given-names: "Yifan"
+    - family-names: "Shu"
+      given-names: "Shoujuan"
+  notes: "Author list and title as they appear on the article; no venue information is recorded here."
+references:
+  - type: dataset
+    title: "CausalVisionRI: Derived data and evaluation record for 24-h rapid-intensification warning in the western North Pacific"
+    year: 2026
+    doi: "10.5281/zenodo.23768442"
+    license: CC-BY-4.0
+    authors:
+      - family-names: "Li"
+        given-names: "Xinrui"
+      - family-names: "Jin"
+        given-names: "Yijun"
+      - family-names: "Dong"
+        given-names: "Yifan"
+      - family-names: "Shu"
+        given-names: "Shoujuan"

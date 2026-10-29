@@ -1,0 +1,62 @@
+Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 Xinrui Li, Yijun Jin, Yifan Dong, Shoujuan Shu
+
+This license applies to the published data record associated with this release
+(the files under `data/` in the Zenodo deposit, i.e. the contents of
+`record1_core.zip` and `record2_ritcf_recon.zip`), comprising:
+
+  * the processed analysis panel, split/sample manifests and row keys;
+  * the imputation mask, the DV24 Yeo-Johnson transformer and the feature
+    scaler fitted on 2000-2017 only;
+  * the causal prior bundle (graph edges, ATE/CATE/headroom/regime estimates,
+    identification status, refutation report, DAG audits, trusted signs);
+  * the four sensitivity variants (strict lag-0 ban, no-OHC, MJO-ENSO
+    adjustment, latitude adjustment);
+  * the frozen test-set predictions (npz), their manifests and the receipt;
+  * the SHIPS-12 feature tables (COHC and OHCD) on the all-TC population;
+  * the evaluation and comparison products, and the figure sources;
+  * the RITCF reconstruction record (sample frame, pair tables,
+    normalisation statistics, per-run audits, operating-point sweeps).
+
+You are free to:
+
+  Share — copy and redistribute the material in any medium or format for any
+  purpose, even commercially.
+
+  Adapt — remix, transform, and build upon the material for any purpose, even
+  commercially.
+
+Under the following terms:
+
+  Attribution — You must give appropriate credit, provide a link to the
+  license, and indicate if changes were made.  You may do so in any reasonable
+  manner, but not in any way that suggests the licensor endorses you or your
+  use.
+
+  No additional restrictions — You may not apply legal terms or technological
+  measures that legally restrict others from doing anything the license
+  permits.
+
+Full text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+-------------------------------------------------------------------------------
+Scope limits — read before reusing
+-------------------------------------------------------------------------------
+
+1. **Derived quantities only.**  Nothing here is a redistribution of the
+   primary data.  ERA5 (Copernicus CDS), GLORYS12V1 (CMEMS), IBTrACS (NOAA
+   NCEI) and HURSAT-B1 v07b (NOAA NCEI) remain governed by their own terms;
+   only storm-centred derived quantities computed from them are published.
+   Raw field archives (`data/phase1/raw/**`), the raw HURSAT frame store
+   (`data/global_hursat/frames*`) and the RITCF feature caches
+   (`era5.npy`, `sat.npy`) are deliberately not included; the scripts that
+   rebuild them are in `scripts/01_data/` and `scripts/ritcf_recon/`.
+
+2. **Model weights are not part of this license.**  Trained checkpoints are
+   not redistributed, and the external `LingBot` backbone keeps its own
+   license.  Every reported metric is nevertheless recomputable from the
+   frozen predictions shipped here.
+
+3. **No warranty.**  The material is provided "as is", without warranties or
+   conditions of any kind, express or implied.

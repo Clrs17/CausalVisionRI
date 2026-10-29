@@ -1,0 +1,38 @@
+# Phase 2 — training, frozen evaluation, comparison, figures
+# The producing environment was CPython 3.12.7 (conda) plus a CUDA 12.4 build
+# of PyTorch.  Every reported number can be recomputed on CPU from the frozen
+# predictions with the requirements below; training additionally needs a GPU.
+
+# --- core numerics -------------------------------------------------------
+numpy>=1.26,<3
+pandas>=2.1
+scipy>=1.11
+scikit-learn>=1.4
+PyYAML>=6.0
+joblib>=1.3
+
+# --- deep learning (training / description only) -------------------------
+torch>=2.3                 # 2.6.0+cu124 was used
+torch-geometric>=2.5       # GATv2 layers in src/wpac_warning/models.py
+psutil>=5.9                # run_holdout_arms.py memory guard
+
+# --- vision backbone -----------------------------------------------------
+# LingBot is an *external* checkpoint, not a pip dependency.  Download it
+# separately and point `model.vision.lingbot_dir` at it:
+#   external/lingbot-base   external/lingbot-large
+# The self-trained ViT-MAE route (scripts/03_assets/pretrain_mae.py) needs
+# nothing beyond torch.  The `lingbot_vision` import is therefore optional and
+# only triggered by `--backend lingbot`.
+
+# --- geoscience I/O (frame index, QC, SHIPS predictors) ------------------
+xarray>=2023.1
+netCDF4>=1.6
+h5py>=3.9                  # HURSAT-B1 archive members
+
+# --- reporting -----------------------------------------------------------
+matplotlib>=3.8
+loguru>=0.7
+
+# --- optional, only for the RITCF reconstruction comparison --------------
+# tcpyPI>=1.3              # potential-intensity ceiling in baseline_ships12.py
+requests>=2.31

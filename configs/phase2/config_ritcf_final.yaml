@@ -1,0 +1,111 @@
+# [release] path normalization applied (the sibling phase-1 checkout -> `data/phase1/`; `config/` -> `configs/phase2/`); see docs/KNOWN_ISSUES.md §1
+# Legacy pre-holdout RITCF configuration. Its development inputs are not included
+# in this release. The current protocol is configs/phase2/holdout_masked_v1.yaml.
+
+phase1_root: "data/phase1"
+
+data:
+  panel_parquet: "data/phase1/processed_alltc_0021/wpac_tc_dataset_processed.parquet"
+  graph_edges_json: "data/phase1/processed_alltc_0017/causal_graph_edges.json"
+  dv24_transformer: "data/phase1/processed_alltc_0017/dv24_yj_transformer.pkl"
+  ate_csv: "data/phase1/processed_alltc_0017/ate_results.csv"
+  frames_dir: "data/frames"
+  frames_index: "data/frames_index_alltc_0021.parquet"
+  tbb_norm: "data/tbb_norm_alltc_0019.json"
+  sample_manifest: "data/phase1/processed_alltc_0021/sample_manifest.csv"
+
+  ri_threshold_kt: 30
+  forecast_horizon_h: 24
+
+  train_years: [2000, 2019]
+  valid_years: [2020, 2021]
+  train_exclude_years: [2020, 2021]
+
+  tau_max: 4
+  prior_min_pvalue: 0.05
+
+  env_vars:
+    - "VMAX"
+    - "PER"
+    - "SPD"
+    - "LAT"
+    - "LAND_DIST"
+    - "SHRD"
+    - "SHEAR_VMAX_ANGLE"
+    - "D200"
+    - "RHLO"
+    - "RHHI"
+    - "VORT"
+    - "PV"
+    - "SST_OA"
+    - "SST_IC"
+    - "OHC_OA"
+    - "OHC_IC"
+    - "WARM_CORE"
+    - "MFC"
+    - "SLHF_IC"
+    - "DRY_AIR"
+    - "W500"
+  history_steps: 5
+
+model:
+  env_encoder:
+    hidden: 256
+  gnn:
+    hidden: 128
+    heads: 4
+    layers: 2
+    dropout: 0.1
+    edge_dim: 3
+  soft_edge_gate: false
+  vision:
+    backend: "vit_mae"
+    mae_checkpoint: "checkpoints/mae_vit_s16_best.pt"
+    mae_pool: "cls"
+    img_size: 224
+    in_channels: 1
+    freeze_backbone: false
+  fusion:
+    type: "gated_cross_attention"
+    d_model: 256
+    heads: 4
+
+  causal_loss:
+    w_adj_ce: 1.0
+    w_sign_ate: 2.0
+    w_counterfactual: 0.02
+
+train:
+  pretrain_epochs: 30
+  finetune_epochs: 40
+  early_stop_patience: 10
+  batch_size: 16             # per-arm --set overrides apply
+  lr_pretrain: 0.001
+  lr_finetune: 0.0003
+  weight_decay: 0.01
+  focal_gamma: 2.0
+  focal_alpha: 0.25
+  causal_every: 1
+  causal_finetune_scale: 0.01
+  backbone_lr_scale: 0.1
+  seed: 42
+  num_workers: 8
+  loyo_years: [2020, 2021]
+
+mae:
+  cache_dir: "data/mae_cache"
+  mask_ratio: 0.75
+  norm_pix_loss: true
+  epochs: 400
+  batch_size: 256
+  base_lr: 0.00015
+  weight_decay: 0.05
+  warmup_epochs: 40
+  val_year: 2024
+  save_every: 20
+  out_dir: "checkpoints"
+  vis_dir: "logs/mae_vis"
+  seed: 42
+
+logging:
+  log_file: "logs/train_ritcf_final.log"

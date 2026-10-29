@@ -1,0 +1,199 @@
+# [release] path normalization applied (the sibling phase-1 checkout -> `data/phase1/`; `config/` -> `configs/phase2/`); see docs/KNOWN_ISSUES.md §1
+# WPAC Phase-2 configuration: causal-prior DL for RI early warning
+# Legacy pre-holdout configuration. Its development inputs are not included in this release.
+
+phase1_root: "data/phase1"   # frozen phase-1 outputs
+
+data:
+  panel_parquet: "data/phase1/processed/wpac_tc_dataset_processed.parquet"
+  graph_edges_json: "data/phase1/processed/causal_graph_edges.json"
+  dv24_transformer: "data/phase1/processed/dv24_yj_transformer.pkl"  # Yeo-Johnson (A2); fallback refit -> data/dv24_yj_transformer_refit.pkl
+  frames_dir: "data/frames"
+  frames_index: "data/frames_index.parquet"
+  tbb_norm: "data/tbb_norm.json"
+  sample_manifest: "data/phase1/processed/sample_manifest.csv"
+
+  # RI label and targets
+  ri_threshold_kt: 30          # DV24 >= 30 kt (label always on raw kt)
+  forecast_horizon_h: 24
+
+  # split: leave-one-year-out by storm (LOYO), train window fitted 2000-2018
+  train_years: [2000, 2018]
+  valid_years: [2019, 2024]
+
+  # prior graph construction
+  tau_max: 4                   # max prior lag; edge_attr lag is normalized as lag/tau_max
+  prior_min_pvalue: 0.05       # A8: drop prior edges with p_value above this (null disables)
+
+  # GNN input: env panel variables (order matters; DV24/RI never enter)
+  # ir_lag_steps: []         # multi-frame temporal input (Plan A): extra IR
+  #                          # frames at t0+lag hours (e.g. [-6,-12,-18,-24]),
+  #                          # nearest storm frame within +/-1.5 h, missing lags
+  #                          # filled with the t0 frame + ir_mask=0.  Default []
+  #                          # = legacy single-frame.  Must match
+  #                          # model.vision.temporal_lags.
+  # ir_embeds_dir: ""        # offline FROZEN-backbone embedding cache (from
+  #                          # scripts/precompute_frame_embeds.py, e.g.
+  #                          # "data/frame_embeds/lingbot_base").  With
+  #                          # ir_lag_steps set, x_ir_embed (T,D) replaces raw
+  #                          # frames (same frame indices/mask); training skips
+  #                          # the backbone entirely.  Default "" = image path.
+  env_vars:
+    - "VMAX"
+    - "PER"
+    - "SPD"
+    - "LAT"
+    - "LAND_DIST"
+    - "SHRD"
+    - "SHEAR_VMAX_ANGLE"
+    - "D200"
+    - "RHLO"
+    - "RHHI"
+    - "VORT"
+    - "PV"
+    - "SST_OA"
+    - "SST_IC"
+    - "OHC_OA"
+    - "OHC_IC"
+    - "WARM_CORE"
+    - "MFC"
+    - "SLHF_IC"
+    - "DRY_AIR"
+    - "W500"
+  history_steps: 5             # t-4..t (24 h lookback, aligned with tau_max=4; covers the 12 lag-4 prior edges)
+
+model:
+  # Free environmental encoder (unconstrained DL channel over the full env
+  # history; the causal GNN below is a SEPARATE prior channel on top of it)
+  env_encoder:
+    hidden: 256
+  # Causal GNN branch (PyG GATv2 with causal-mask message passing, no self-loops).
+  # B1: a learnable target readout node (no input features, no outgoing edges)
+  # collects the prior env -> DV24_YJ edges (count is prior-dependent);
+  # [target-node state, env-node mean].
+  gnn:
+    hidden: 128
+    heads: 4
+    layers: 2
+    dropout: 0.1
+    edge_dim: 3                # (lag/tau_max, coef sign, |coef|) per prior edge
+  # B4 optional soft edge gate (sigmoid of per-edge learnable logit, init so
+  # gate ~= normalized |coef|; scales the edge attributes entering the GATv2
+  # attention scorer).  Default OFF for comparability with the fixed-prior model.
+  soft_edge_gate: false
+  # Vision encoder branch (B5: parameter budget lifted — "do it right" route)
+  vision:
+    backend: "vit_mae"       # "vit_mae" (default) | "mini_cnn" (from-scratch ablation arm)
+    mae_checkpoint: "checkpoints/mae_vit_s16_best.pt"   # best-val checkpoint (ep100, val=0.7816); early-stopped at ep339, val min at ep114 (0.7794)
+    mae_pool: "cls"          # downstream token readout: "cls" | "mean"
+    img_size: 224
+    in_channels: 1           # IRWIN raw TBB only (BD scale NOT used)
+    freeze_backbone: false   # full finetuning by default (budget lifted; LoRA dropped)
+    # --- LingBot backend only (backend: "lingbot") -------------------------
+    # lingbot_dir: "external/lingbot"        # local ckpt dir (small weights)
+    # lingbot_variant: "small"
+    # ft_mode: null            # fine-tuning strategy: null = legacy `freeze_backbone`
+    #                          # behaviour (default, unchanged); "frozen" | "full" |
+    #                          # "partial" (last ft_blocks blocks + final norm trainable)
+    #                          # | "lora" (backbone frozen, LoRA on every attn qkv/proj)
+    # ft_blocks: 4             # partial: number of trailing blocks to unfreeze
+    # lora_r: 16               # lora: low-rank branch rank
+    # lora_alpha: 32.0         # lora: scaling = lora_alpha / lora_r
+    # --- multi-frame temporal aggregation (Plan A; lingbot/vit_mae) --------
+    # temporal_lags: []        # non-empty (e.g. [-6,-12,-18,-24]) wraps the
+    #                          # per-frame encoder in TemporalAggregatorEncoder
+    #                          # (per-frame encode -> temporal transformer, t0
+    #                          # token = z_ir).  Default [] = single-frame, no
+    #                          # wrapper.  Must match data.ir_lag_steps.
+    # temporal_layers: 1       # temporal transformer layers
+    # temporal_heads: 4
+    # temporal_dropout: 0.1
+    # --- temporal aggregator variants (docs/MULTIFRAME_RS_METHODS.md; all
+    # --- default off = legacy behaviour) ----------------------------------
+    # temporal_diff: false     # feature differencing: aggregator input becomes
+    #                          # Linear(2d->d)(concat(z_t, z_t - z_{t-1})),
+    #                          # frame-0 diff = zeros (FC-Siam-Diff/ChangeFormer)
+    # temporal_dim: 0          # >0 slims the aggregator: Linear(d->temporal_dim)
+    #                          # before aggregation, back to d after readout
+    #                          # (BreizhCrops: temporal head should be small;
+    #                          # e.g. 128 with temporal_dropout 0.3)
+    # temporal_pool: "token"   # "token" = transformer + t0-token readout (current default);
+    #                          # "attnpool" = no transformer, learnable-query
+    #                          # single-head attention pooling (mask-respecting)
+  # Fusion
+  fusion:
+    type: "gated_cross_attention"   # IR query, [env, causal] KV tokens; gate g falls back when priors mislead
+    d_model: 256
+    heads: 4
+
+  # Causal loss terms (A6: NOTEARS acyclicity removed — the lag-0 prior
+  # subgraph has only 5 fixed edges, h(W) is identically ~0).
+  # Weight rationale (A3), measured at smoke-test init (scripts/smoke_check.py):
+  #   raw terms: adj_ce=1.68, sign=0.69, cf=0.69; pretrain main (YJ MSE) ~300.
+  #   weighted param |grad|: adj=0.23/w, sign=0.003/w, cf=17.6/w  — the cf term
+  #   has by far the largest gradient, so its weight is set lowest to avoid
+  #   swamping the main loss; the sign term is inherently small (2nd-order)
+  #   and gets the largest weight.
+  #   causal total ~= 1*1.68 + 2*0.69 + 0.02*0.69 = 3.07  ~= 1% of the pretrain
+  #   main loss, rising as the MSE converges (within the 1%-10% band).
+  causal_loss:
+    w_adj_ce: 1.0           # B2: attention-vs-prior cross-entropy over ALL prior edges
+    w_sign_ate: 2.0         # sign consistency with sensitivity-checked ATEs (A1 create_graph=True)
+    w_counterfactual: 0.02  # A7: do-intervention over all trusted ATE treatments
+
+train:
+  # DV24 regression pretrain (Yeo-Johnson target, A2) -> RI classification
+  # finetune (focal loss, fresh optimizer).  Early stopping on the INNER-VAL
+  # years (fixed [2016, 2017, 2018], storm-disjoint; single inner year was
+  # found to ANTI-correlate with held skill — see docs/SELECTION_HISTORY.md):
+  # pretrain keeps best inner MSE, finetune best inner BSS; decision threshold
+  # is F1-tuned on the inner split.  The held-out year is evaluated ONCE with
+  # the selected checkpoint + threshold.  Results are appended to
+  # data/loyo_results.csv after EVERY fold (A4).
+  pretrain_epochs: 30
+  finetune_epochs: 40
+  early_stop_patience: 10   # stop a phase after 10 stale inner-val epochs (best checkpoint is always restored)
+  batch_size: 16             # 8 GB VRAM (RTX 4060 Laptop); grad-checkpoint if OOM
+  lr_pretrain: 0.001
+  lr_finetune: 0.0003
+  weight_decay: 0.01
+  focal_gamma: 2.0
+  focal_alpha: 0.25          # positive-class weight (RI base rate ~11%)
+  causal_every: 1            # A3: causal losses on every batch (was 4)
+  causal_finetune_scale: 0.01  # finetune main loss (focal, ~0.3) is ~1000x
+                               # smaller than pretrain MSE (~300); scaling the
+                               # causal total (~3.1) by 0.01 keeps its share
+                               # in the 1%-10% band during phase B as well
+  backbone_lr_scale: 0.1     # ViT-MAE backbone lr = main lr * this (fresh
+                             # projection head and other branches use main lr);
+                             # also applies to the lingbot backbone (incl. LoRA
+                             # params; model.vision.proj uses the main lr)
+  # llrd_decay: 1.0          # lingbot only: layer-wise lr decay (LLRD). != 1.0
+  #                          # (e.g. 0.75) gives each backbone layer group
+  #                          # lr * backbone_lr_scale * decay^depth_factor
+  # lpft_warmup_epochs: 0    # lingbot only: LP-FT — freeze the vision backbone
+  #                          # for the first K FINETUNE epochs, then switch to
+  #                          # the arm's ft_mode and rebuild the optimizer
+  seed: 42
+  num_workers: 3           # persistent workers; 3 balances throughput vs the 34GB RAM ceiling (nw=4 hit 83% load)
+  loyo_years: [2019, 2020, 2021, 2022, 2023, 2024]  # leave-one-year-out eval folds
+
+# MAE in-domain pretraining (scripts/pretrain_mae.py, self-supervised on ALL
+# HURSAT frames — no labels, so using every year is leakage-free)
+mae:
+  cache_dir: "data/mae_cache"        # frames.npy + index.parquet (all 53,396 frames)
+  mask_ratio: 0.75
+  norm_pix_loss: true
+  epochs: 400
+  batch_size: 256
+  base_lr: 0.00015           # scaled by batch_size/256 (MAE convention)
+  weight_decay: 0.05
+  warmup_epochs: 40
+  val_year: 2024             # storms starting this year form the val split (storm-disjoint)
+  save_every: 20             # checkpoint + reconstruction visualization cadence
+  out_dir: "checkpoints"
+  vis_dir: "logs/mae_vis"
+  seed: 42
+
+logging:
+  log_file: "logs/train.log"

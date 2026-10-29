@@ -1,0 +1,327 @@
+# [release] path normalization applied (every `data/` path -> `data/phase1/`, because the phase-1 data tree now lives under the release data root); see docs/KNOWN_ISSUES.md §1
+# WPAC Causal Inference — RITCF arm (all-TC, training years 2000-2017)
+# Derived from config.yaml (Phase 1). Differences:
+#   1. All-TC scope: storm_min_peak_intensity = 0 (no >=65kt peak filter)
+#   2. Sample window: 2000-2017 only (RITCF protocol training years;
+#      validation 2018-19 / test 2020-21 never enter estimation)
+#   3. scaler/winsorize fit period: 2000-2017
+#   4. All outputs under data/processed_alltc_0019/ (phase-1 deliverables untouched)
+#   5. No download phase (ERA5/OHC already local for all 528 storms)
+
+version: "wpac_dv24_alltc0019_v1.0"
+
+# =============================================================================
+# 1. Data Paths
+# =============================================================================
+data:
+  ibtracs_path: "data/phase1/raw/ibtracs/ibtracs.WP.list.v04r01.csv"
+  ibtracs_url: "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.WP.list.v04r01.csv"
+  era5_download_dir: "data/phase1/raw/era5"
+  ohc_dir: "data/phase1/raw/ohc"               # per-storm {SID}/{SID}_ohc.nc (daily, kJ/cm^2)
+  output_dir: "data/phase1/processed_alltc_0019"
+  log_dir: "data/phase1/processed_alltc_0019/logs"
+  retry_json: "data/phase1/processed_alltc_0019/retry.json"
+
+# Time range and basin filter
+  years: [2000, 2019]              # RITCF training years only
+  basin: "WP"
+
+# RI threshold: only for statistical reference, NOT used as target variable
+  ri_threshold: 30  # kt
+
+# =============================================================================
+# 2. Best Track Configuration
+# =============================================================================
+best_track:
+  intensity_col: "USA_WIND"      # 1-min sustained wind (kt)
+  lat_col: "USA_LAT"
+  lon_col: "USA_LON"
+  time_col: "ISO_TIME"
+  id_col: "SID"
+  name_col: "NAME"
+  pres_col: "USA_PRES"           # optional, for validation
+
+  min_intensity: 0               # keep full lifecycle including TD
+  storm_min_peak_intensity: 0    # ALL-TC scope: no peak-intensity filter
+  sample_manifest_csv: "data/phase1/processed_alltc_0019/sample_manifest.csv"  # do NOT clobber the shared phase-1 manifest (download_all_wpac.py reads it)
+  backfilled_sids:               # storms whose ERA5/OHC were backfilled in the 2026-07 rerun (R3-4)
+    - "2009196N14129"            # MOLAVE 2009
+    - "2013178N09133"            # RUMBIA 2013
+  forecast_horizon: 4            # 6h × 4 = 24h lookahead
+
+# Lifecycle stage definitions [min, max) in kt
+  lifecycle_stages:
+    formation: [0, 25]
+    intensification: [25, 65]
+    mature: [65, 100]
+    extreme: [100, 999]
+
+# Distance to land calculation (documentary only)
+  land_distance:
+    method: "gshhg"
+    resolution: "f"
+    etopo1_path: null
+
+# =============================================================================
+# 3. ERA5 Download Configuration (unused in this arm; kept for schema parity)
+# =============================================================================
+era5:
+  cds_dataset_pl: "reanalysis-era5-pressure-levels"
+  cds_dataset_sl: "reanalysis-era5-single-levels"
+
+  pressure_levels: [1000, 925, 850, 700, 500, 300, 200]  # hPa
+
+  pl_variables:
+    - "geopotential"
+    - "temperature"
+    - "u_component_of_wind"
+    - "v_component_of_wind"
+    - "relative_humidity"
+    - "specific_humidity"
+    - "vertical_velocity"
+    - "divergence"
+    - "potential_vorticity"
+
+  sl_variables:
+    - "sea_surface_temperature"
+    - "mean_sea_level_pressure"
+    - "2m_temperature"
+    - "surface_latent_heat_flux"
+    - "top_net_thermal_radiation"    # OLR proxy
+
+  spatial_buffer_deg: 15
+  temporal_buffer_days: 1
+  time_resolution_hours: 6
+
+  download_retry: 3
+  download_timeout: 600
+  download_sleep: 60
+  skip_existing: true
+
+  max_concurrent_downloads: 2
+  cds_queue_limit: 2
+
+# =============================================================================
+# 4. Extraction & Derived Variables
+# =============================================================================
+extraction:
+  inner_core_radius: [0, 2]        # IC: 0°–2°
+  outer_area_radius: [2, 8]        # OA: 2°–8°
+
+  use_planar_distance: true
+
+  derived_variables:
+    - "SHRD"
+    - "USHR"
+    - "VSHR"
+    - "SHEAR_DIR"
+    - "SHEAR_VMAX_ANGLE"
+    - "D200"
+    - "RHLO"
+    - "RHHI"
+    - "VORT"
+    - "PV"
+    - "TPW"
+    - "SST_OA"
+    - "SST_IC"
+    - "OHC_IC"
+    - "OHC_OA"
+    - "POT"           # STRATIFICATION ONLY (not a causal-graph node nor treatment)
+    - "WARM_CORE"
+    - "MFC"
+    - "SLHF_IC"
+    - "DRY_AIR"
+    - "W500"
+
+  optional_variables:
+    POT: true
+    WARM_CORE: true
+    MFC: true
+    SLHF_IC: true
+    DRY_AIR: true
+    OHC: true        # per-storm daily OHC, 528/528 coverage confirmed for 00-17
+
+# =============================================================================
+# 5. Preprocessing & Transformations
+# =============================================================================
+preprocessing:
+  yj_transformer_path: "data/phase1/processed_alltc_0019/dv24_yj_transformer.pkl"
+
+  winsorize_limits: [0.01, 0.99]
+
+  scaler_path: "data/phase1/processed_alltc_0019/feature_scaler.pkl"
+  scaler_fit_years: [2000, 2017]   # fit on RITCF training period only
+
+  min_obs_per_storm: 5
+
+# =============================================================================
+# 6. Causal Discovery (TiGraMITe PCMCI+)
+# =============================================================================
+causal_discovery:
+  target: "DV24_YJ"
+
+  variables:
+    - "VMAX"
+    - "PER"
+    - "SPD"
+    - "LAT"
+    - "LAND_DIST"
+    - "SHRD"
+    - "SHEAR_VMAX_ANGLE"
+    - "D200"
+    - "RHLO"
+    - "RHHI"
+    - "VORT"
+    - "PV"
+    - "SST_OA"
+    - "SST_IC"
+    - "OHC_OA"
+    - "OHC_IC"
+    # POT deliberately REMOVED (deterministic function of SST_OA and VMAX)
+    - "WARM_CORE"
+    - "MFC"
+    - "SLHF_IC"
+    - "DRY_AIR"
+    - "W500"
+    - "DV24_YJ"
+
+  tau_max: 4
+  tau_min: 0
+  pc_alpha: 0.01
+  independence_test: "ParCorr"
+  fdr_method: "fdr_bh"
+
+  allow_target_lag0: true
+
+  pc_alpha_oracle: null
+  max_combinations: 1
+
+  results_pkl: "data/phase1/processed_alltc_0019/pcmci_results.pkl"
+  graph_png: "data/phase1/processed_alltc_0019/causal_graph.png"
+  graph_dot: "data/phase1/processed_alltc_0019/causal_graph.dot"
+
+# =============================================================================
+# 7. Effect Estimation (DoWhy)
+# =============================================================================
+effect_estimation:
+  target_original: "DV24"
+  target_binary: "RI"
+  mediator: "DV24"
+
+  treatments:
+    - "SHRD"
+    - "RHLO"
+    - "VORT"
+    - "PV"
+    - "D200"
+    - "WARM_CORE"
+    - "MFC"
+    - "W500"
+    - "OHC_IC"
+
+  headroom:
+    enabled: true
+    bins: [-inf, 30, 60, inf]
+    labels: ["low(<30kt)", "mid(30-60kt)", "high(>60kt)"]
+    treatments: ["SST_OA", "SST_IC", "OHC_IC", "RHLO", "SHRD"]
+
+  ate_method: "backdoor.linear_regression"
+  ate_method_nonlinear: "backdoor.generalized_linear_model"
+
+  cate_dimensions: ["LC_STAGE", "LAT_BIN", "VMAX_BIN"]
+
+  cate_bins:
+    lat: [0, 15, 25, 45]
+    vmax: [0, 25, 65, 100]
+
+  ate_csv: "data/phase1/processed_alltc_0019/ate_results.csv"
+  cate_csv: "data/phase1/processed_alltc_0019/cate_results.csv"
+  refutation_md: "data/phase1/processed_alltc_0019/refutation_report.md"
+
+  regime:
+    enabled: true
+    stratify_by: "PER"
+    bins: [-inf, 0, 7.5, inf]
+    labels: ["weakening", "moderate", "RI"]
+    comparison_baseline: "moderate"
+    ri_specific_threshold: 3.0
+
+  shrd_nonlinear:
+    enabled: true
+    bins: [0, 5, 15, inf]
+    labels: ["low", "moderate", "high"]
+    reference: "moderate"
+
+  qualitative:
+    threshold_dv24: 2.0
+    threshold_ri: 0.02
+
+  bootstrap:
+    enabled: true
+    B: 200
+    seed: 42
+
+  refutation:
+    random_seed: 42
+    placebo:
+      type: "permute"
+      pass_threshold: 0.30
+    subset:
+      fraction: 0.9
+      num_runs: 3
+      pass_threshold: 0.20
+    unobserved_confounder:
+      effect_strength_on_treatment: 0.3
+      effect_strength_on_outcome: 0.3
+      pass_threshold: 0.25
+    offshore:
+      land_dist_threshold: 100
+      pass_threshold: 0.20
+
+# =============================================================================
+# 8. Knowledge Base Output
+# =============================================================================
+knowledge_base:
+  output_yaml: "data/phase1/processed_alltc_0019/causal_effects_db.yaml"
+  schema_version: "wpac_dv24_alltc0019_v1.0"
+  graph_edges_json: "data/phase1/processed_alltc_0019/causal_graph_edges.json"
+
+# =============================================================================
+# 9. External Indices (placeholder, not consumed by src/)
+# =============================================================================
+external_indices:
+  mjo:
+    enabled: true
+    source: "omi"
+    omi_url: "https://psl.noaa.gov/data/correlation/omi.indices.txt"
+    omi_path: "data/phase1/raw/omi_indices.txt"
+  enso:
+    enabled: true
+    source: "noaa_cpc"
+    nino34_url: "https://www.cpc.ncep.noaa.gov/data/indices/sstoi.indices"
+    nino34_path: "data/phase1/raw/nino34_indices.txt"
+
+# =============================================================================
+# 10. Execution Control
+# =============================================================================
+execution:
+  phases:
+    - "best_track"
+    - "preprocessing"
+    - "causal_discovery"
+    - "effect_estimation"
+    - "knowledge_base"
+
+  n_jobs: -1
+  extraction_max_workers: 8
+  verbosity: 1
+
+# =============================================================================
+# 11. Logging
+# =============================================================================
+logging:
+  level: "INFO"
+  format: "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>"
+  file: "data/phase1/processed_alltc_0019/logs/phase1_alltc.log"
+  rotation: "10 MB"
+  retention: "30 days"

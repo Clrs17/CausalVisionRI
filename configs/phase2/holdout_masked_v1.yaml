@@ -1,0 +1,240 @@
+# [release] path normalization applied (the sibling phase-1 checkout -> `data/phase1/`; `config/` -> `configs/phase2/`); see docs/KNOWN_ISSUES.md §1
+# HOLDOUT_MASKED_V1 — fixed-holdout protocol (docs/PROTOCOL.md)
+#
+# ALL-SYSTEM population: every WNP system in 2000-2024 (725 storms from
+# `config_alltc_0024.yaml`), no peak-intensity filter.  No analysis branch of
+# this protocol uses the 375-storm >=65 kt sample.
+#
+# fit=2000-2017 / inner=2018-2019 / test=2020-2024, storm-level splits from the
+# phase-1 sample manifest, 24+6 h label embargo at both boundaries.
+#
+# Every graph / ATE / identification / DV24-transformer asset is pinned by
+# `data.prior_manifest` (paths + SHA-256); the config deliberately does NOT set
+# data.graph_edges_json / data.ate_csv / data.identification_csv /
+# data.dv24_transformer, so there is no path that can silently fall back to the
+# old all-sample files.  `scripts/02_causal/run_holdout_fit0017.py` (phase-1 side,
+# run by the data owner) must produce the manifest before training.
+#
+# Per-arm overrides are supplied by the runner (22 arms); `train.run_id` is
+# required and selects the versioned output directory.
+
+version: "holdout_masked_v1"
+phase1_root: "data/phase1"
+
+data:
+  protocol: holdout_masked_v1
+  fit_years: [2000, 2017]
+  inner_years: [2018, 2019]
+  test_years: [2020, 2024]
+  label_horizon_h: 24          # DV24 = VMAX(t+24h) - VMAX(t)
+  label_tolerance_h: 6         # label nearest-neighbour tolerance
+  label_time_col: "F24_TIME"   # realised label timestamp (strict boundary)
+  # backward-compatible keys (legacy LOYO code paths read these)
+  train_years: [2000, 2017]
+  valid_years: [2018, 2019]
+
+  # fit-only rebuild (winsorize / Yeo-Johnson / feature scaler / NaN imputation
+  # fitted on 2000-2017 only; built by the phase-1 asset step)
+  panel_parquet: "data/holdout_masked_v1/panel_fit0017.parquet"
+
+  # canonical SID -> storm_year; never re-derived from a frames join
+  storm_year_manifest: "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv"
+
+  # fit-only prior bundle: graph JSON, ATE, PCMCI pkl, identification status,
+  # panel + dv24 transformer/tbb_norm asset hashes.  Required.
+  prior_manifest: "data/holdout_masked_v1/prior_manifest.json"
+  prior_mask_type: "xyz"
+  ate_exclude_treatments: ["D200"]   # pre-specified exclusion; identification also filters
+  ate_p_boot_max: 0.05
+  ate_min_refutations: 2
+
+  # ALL-SYSTEM population: every WNP system in 2000-2024 (725 for
+  # config_alltc_0024), no peak-intensity filter.  Frames come from the QC v1
+  # slice of the global HURSAT corpus (all basins, `{SID}_times.npy` time axis);
+  # frames_qc (153,295 deduplicated frames) stays the ONLY downstream frame
+  # corpus — frame availability, the frames index and every training row set
+  # are derived from it and are unchanged.  The MAE encoder weights are
+  # self-supervised-pretrained on the full multi-sensor raw corpus (see the
+  # `mae` block), which never touches downstream rows.  The 22-arm registry is
+  # unchanged.  The >=65 kt 375-system sample is NOT an analysis branch.
+  #
+  # population_n_systems         canonical sample manifest size (725)
+  # population_n_label_ineligible  systems without an F24 label, explicitly
+  #                               excluded (5): the canonical sample stays 725,
+  #                               the label-eligible split/panel is 725 - 5
+  # frames_corpus                the corpus data.frames_dir must point at; the
+  #                               builder/packer reject data/frames, the raw
+  #                               download corpus and any archive/ path
+  # qc_manifest                  QC v1 audit of that corpus (rule hursat_qc_v1:
+  #                               one frame per acquisition time, non-physical
+  #                               TBB masked to NaN, tarball gaps repaired)
+  population: alltc
+  population_n_systems: 725
+  population_n_label_ineligible: 5
+  frames_corpus: "hursat_b1_v07b_global_qc_v1"
+  rekey_crosswalk: "data/global_hursat/rekey_crosswalk.json"
+  qc_manifest: "data/global_hursat/qc_manifest.json"
+  frames_dir: "data/global_hursat/frames_qc"
+  frames_index: "data/holdout_masked_v1/frames_index.parquet"
+  population_audit: "data/holdout_masked_v1/population_audit.json"
+  # row-level exclusion manifest (rule frame_availability_v1): only eligible
+  # rows whose own t0 has no exact QC frame are excluded, each listed with its
+  # reason; environment-history gaps are masked, never excluded.  The trainer,
+  # the SHIPS baseline and the packer all consume this same file.
+  frame_availability: "data/holdout_masked_v1/frame_availability.json"
+  tbb_norm: "data/holdout_masked_v1/tbb_norm_fit0017.json"
+
+  ri_threshold_kt: 30
+  forecast_horizon_h: 24
+  tau_max: 4
+  prior_min_pvalue: 0.05
+  history_steps: 5
+
+  # [] = single frame; multi-frame arms override both keys together
+  # ir_lag_steps: [-6,-12,-18,-24]
+  # ir_embeds_dir: "data/frame_embeds/lingbot_base"
+
+  env_vars:
+    - "VMAX"
+    - "PER"
+    - "SPD"
+    - "LAT"
+    - "LAND_DIST"
+    - "SHRD"
+    - "SHEAR_VMAX_ANGLE"
+    - "D200"
+    - "RHLO"
+    - "RHHI"
+    - "VORT"
+    - "PV"
+    - "SST_OA"
+    - "SST_IC"
+    - "OHC_OA"
+    - "OHC_IC"
+    - "WARM_CORE"
+    - "MFC"
+    - "SLHF_IC"
+    - "DRY_AIR"
+    - "W500"
+
+  # smoke-only cap (0 = off); recorded in the run manifest
+  smoke_limit_rows: 0
+
+model:
+  env_encoder:
+    hidden: 256
+  gnn:
+    hidden: 128
+    heads: 4
+    layers: 2
+    dropout: 0.1
+    edge_dim: 3
+  soft_edge_gate: false
+  vision:
+    backend: "vit_mae"
+    # WNP all-TC MAE weights live in the versioned `mae_wnp_alltc_full`
+    # directory (self-supervised pretraining on the full multi-sensor raw
+    # corpus, hursat_full_multisensor_v1).  The legacy
+    # checkpoints/mae_vit_s16_best.pt, the server-side `mae_wnp` and the
+    # QC-corpus `mae_wnp_alltc` weights are audit-only and must never be
+    # picked up by accident.
+    mae_checkpoint: "checkpoints/holdout_masked_v1/mae_wnp_alltc_full/mae_vit_s16_best.pt"
+    mae_pool: "cls"
+    img_size: 224
+    in_channels: 1
+    freeze_backbone: false
+  fusion:
+    type: "gated_cross_attention"
+    d_model: 256
+    heads: 4
+  causal_loss:
+    w_adj_ce: 1.0
+    w_sign_ate: 2.0
+    w_counterfactual: 0.02
+
+train:
+  # versioned output: <output_root>/<run_id>/{config.yaml,results.csv,preds/,
+  # checkpoints/,*_manifest.json} — no writes to the legacy data/preds or
+  # data/loyo_results_*.csv
+  output_root: "data/runs/holdout_masked_v1"
+  run_id: null                 # REQUIRED (--set train.run_id=<arm>)
+  pretrain_epochs: 30
+  finetune_epochs: 40
+  early_stop_patience: 10
+  batch_size: 16
+  lr_pretrain: 0.001
+  lr_finetune: 0.0003
+  weight_decay: 0.01
+  focal_gamma: 2.0
+  focal_alpha: 0.25
+  causal_every: 1
+  causal_finetune_scale: 0.01
+  backbone_lr_scale: 0.1
+  seed: 42
+  num_workers: 3
+  inner_only: true             # enforced by the trainer; test is never touched
+  results_csv: "data/runs/holdout_masked_v1/unused_legacy_results.csv"
+
+selection:
+  k: 5
+  topk: [4, 5, 6]
+  family_gate: 8
+  all22_sensitivity: true
+  inner_years: [2018, 2019]
+
+evaluation:
+  # the development rate is frozen by scripts/finalize_holdout.py from the
+  # eligible fit+inner rows; evaluation reads it from the final lock only
+  bootstrap: 2000
+  alpha: 0.10
+  seed: 42
+
+# MAE self-supervised pretraining on the clean development window.  Validation
+# is the fixed 2018-2019 storm set; 2020-2024 frames are excluded at the index
+# level.  No random fallback, no stale-cache reuse.
+#
+# Both MAE caches are built from the FULL multi-sensor raw corpus
+# (data/global_hursat/frames, 304,518 frames: every acquisition kept —
+# including duplicate times from multiple satellites — non-physical TBB
+# <100 K / >350 K masked to NaN at cache build, corpus id
+# hursat_full_multisensor_v1).  This cache feeds SELF-SUPERVISED PRETRAINING
+# ONLY: frames_qc (153,295 deduplicated frames) remains the downstream corpus
+# for frame availability, the frames index and every training row set.
+#   WNP all-TC : data/mae_cache_wnp_alltc_full -> checkpoints/.../mae_wnp_alltc_full
+#                scripts/merge_global_cache.py --source-corpus raw_full
+#                --frames-dir data/global_hursat/frames
+#                --sids-from <725 sample manifest>
+#                --out-dir data/mae_cache_wnp_alltc_full
+#   global full: data/mae_cache_global_full -> checkpoints/.../mae_global_full
+#                scripts/merge_global_cache.py --source-corpus raw_full
+#                --out-dir data/mae_cache_global_full
+# The earlier QC-corpus caches (data/mae_cache_wnp_alltc,
+# data/mae_cache_global_qc) and their weights remain valid for audit but are
+# no longer the production default; the pre-QC data/mae_cache /
+# data/mae_cache_global caches (duplicate times + non-physical fill, no mask)
+# are rejected outright.
+mae:
+  # the downstream population this MAE serves is fixed; a global run overrides
+  # it with `scripts/pretrain_mae.py --population global`
+  population: alltc
+  cache_dir: "data/mae_cache_wnp_alltc_full"
+  global_cache_dir: "data/mae_cache_global_full"
+  train_frame_years: [2000, 2017]
+  val_years: [2018, 2019]
+  excluded_years: [2020, 2024]
+  mask_ratio: 0.75
+  norm_pix_loss: true
+  epochs: 400
+  early_stop_patience: 20       # stop after 20 epochs without val improvement
+  batch_size: 256
+  base_lr: 0.00015
+  weight_decay: 0.05
+  warmup_epochs: 40
+  save_every: 20
+  out_dir: "checkpoints/holdout_masked_v1/mae_wnp_alltc_full"
+  global_out_dir: "checkpoints/holdout_masked_v1/mae_global_full"
+  vis_dir: "logs/mae_vis/holdout_masked_v1"
+  seed: 42
+
+logging:
+  log_file: "logs/train_holdout_masked_v1.log"

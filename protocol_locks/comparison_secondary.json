@@ -1,0 +1,1136 @@
+{
+ "kind": "comparison_secondary",
+ "protocol": "holdout_masked_v1",
+ "analysis_class": "secondary: subset and/or relabelled evaluation of FROZEN predictions; no training, no new inference",
+ "created_at": "2026-10-21T02:38:28Z",
+ "engine": {
+  "script": "scripts/compare_models_consistent.py",
+  "spec": "docs/COMPARISON.md",
+  "design": "docs/SM_MAP.md",
+  "sha256": "bbd1dbbf4e2abf6dd33791de6aedf324e06e40e9937ef86473b391b0f0384480"
+ },
+ "row_key_hash_rule": "sha256 of '\\n'.join(sorted(row_uid))",
+ "figures": {
+  "A": {
+   "window": "test 2020-2024",
+   "label_definition": "USA-30kt (IBTrACS USA DV24>=30 kt)",
+   "sample_definition": "recon dataset_kt30 test rows ∩ our frozen test rows ∩ SHIPS-12 (12 predictors all finite) rows",
+   "n": 2178,
+   "n_RI": 209,
+   "base_rate": 0.09595959595959595,
+   "row_key_sha256": "4e578a95b05cc466b5ce0d60b10db7807eaf7c9d548ab564aebd264bcd86afd2",
+   "official_protocol_rows": 3004,
+   "relation_to_official": "subset of the official 3,004-row test table; official headline numbers stay in the main table"
+  },
+  "A_cma30_control_cell": {
+   "window": "test 2020-2024",
+   "label_definition": "CMA-30kt (CMA DV24>=30 kt)",
+   "sample_definition": "identical rows to figure A",
+   "n": 2178,
+   "n_RI": 120,
+   "base_rate": 0.05509641873278237,
+   "row_key_sha256": "4e578a95b05cc466b5ce0d60b10db7807eaf7c9d548ab564aebd264bcd86afd2"
+  },
+  "B": {
+   "window": "test 2020-2021",
+   "label_definition": "CMA-25.27kt (CMA DV24>=25.27 kt)",
+   "sample_definition": "recon dataset (25.27 kt) test rows ∩ our frozen test rows ∩ SHIPS-12 all finite",
+   "n": 949,
+   "n_RI": 66,
+   "base_rate": 0.06954689146469968,
+   "row_key_sha256": "b47fb70f64efdd8ba18a73cf74296cc66f151bdb404390461775e3e9f2766dc2"
+  }
+ },
+ "waterfall": {
+  "A": [
+   {
+    "stage": "0_our_frozen_test_rows_official",
+    "n": 3004,
+    "n_RI_USA30": 222,
+    "n_RI_CMA30": null
+   },
+   {
+    "stage": "1_and_ships12_all_finite",
+    "n": 2892,
+    "n_RI_USA30": 221,
+    "n_RI_CMA30": null,
+    "dropped": 112,
+    "drop_reason": "SHIPS-12 predictor not all finite"
+   },
+   {
+    "stage": "2_and_recon_kt30_test_rows",
+    "n": 2178,
+    "n_RI_USA30": 209,
+    "n_RI_CMA30": 120,
+    "dropped": 714,
+    "drop_reason": "row absent from the recon kt30 dataset in every split (their eligibility: CMA wind / frame availability / storm filter); not a wind-source join failure",
+    "dropped_by_year": {
+     "2020": 116,
+     "2021": 193,
+     "2022": 139,
+     "2023": 118,
+     "2024": 148
+    },
+    "dropped_present_in_any_recon_split": 0,
+    "recon_kt30_test_rows": 2385,
+    "recon_kt30_test_window": "2020-2024"
+   }
+  ],
+  "B": [
+   {
+    "stage": "0_recon_25.27_test_rows",
+    "n": 1057,
+    "n_RI_CMA25": 66
+   },
+   {
+    "stage": "1_and_our_frozen_test_rows",
+    "n": 954,
+    "n_RI_CMA25": 66,
+    "n_RI_USA30": 83,
+    "dropped": 103,
+    "drop_reason": "row has no frozen prediction (new inference not allowed); see reason table"
+   },
+   {
+    "stage": "2_and_ships12_all_finite",
+    "n": 949,
+    "n_RI_CMA25": 66,
+    "n_RI_USA30": 83,
+    "dropped": 5,
+    "drop_reason": "SHIPS-12 predictor not all finite"
+   }
+  ],
+  "B_uncovered_reasons": {
+   "frame_availability:*": 0,
+   "eligible_filter (embargo / F24 target-window boundary)": 0,
+   "usa_side_row_absent:after_last_panel_row": 99,
+   "usa_side_row_absent:before_first_panel_row": 4
+  }
+ },
+ "coverage": {
+  "A": {
+   "ri_denominator_label": "CMA-30kt (recon label)",
+   "rows": 2178,
+   "ri_rows_total": 120,
+   "ri_rows_covered": 120,
+   "ri_row_coverage": 1.0,
+   "storms_total": 120,
+   "storms_covered": 120,
+   "storm_coverage": 1.0
+  },
+  "B": {
+   "ri_denominator_label": "CMA-25.27kt (recon label)",
+   "rows": 949,
+   "ri_rows_total": 66,
+   "ri_rows_covered": 66,
+   "ri_row_coverage": 1.0,
+   "storms_total": 51,
+   "storms_covered": 51,
+   "storm_coverage": 1.0
+  },
+  "B_uncovered_reason_counts": {
+   "frame_availability:*": 0,
+   "eligible_filter (embargo / F24 target-window boundary)": 0,
+   "usa_side_row_absent:after_last_panel_row": 99,
+   "usa_side_row_absent:before_first_panel_row": 4
+  }
+ },
+ "wind_source_decomposition": {
+  "figure": "A",
+  "n_RI_USA30": 209,
+  "n_RI_CMA30": 120,
+  "jaccard_RI_rows": 0.5302325581395348,
+  "label_agreement": 0.9536271808999082,
+  "note": "same rows, two wind sources; the CMA-labelled subset carries a much lower base rate, so CMA-trained models face a distribution shift in figure A"
+ },
+ "thresholds": {
+  "policy": "public/locked operating rule for the model's own protocol + an F1 point re-derived under the figure's label on val/inner rows (2018-19); figure B never reuses the USA-30kt 0.225",
+  "figures": {
+   "A": {
+    "ours": [
+     {
+      "rule": "native inner-F1 (locked 0.225)",
+      "family": "locked",
+      "score": "p_ours",
+      "threshold": 0.22500000000000003
+     }
+    ],
+    "baseline_lr": [
+     {
+      "rule": "native inner-F1 (locked)",
+      "family": "locked",
+      "score": "p_baseline_lr",
+      "threshold": 0.7000000000000003
+     }
+    ],
+    "baseline_lda": [
+     {
+      "rule": "native inner-F1 (locked)",
+      "family": "locked",
+      "score": "p_baseline_lda",
+      "threshold": 0.10000000000000002
+     }
+    ],
+    "baseline_ships12_lda": [
+     {
+      "rule": "native inner-F1 (locked)",
+      "family": "locked",
+      "score": "p_baseline_ships12_lda",
+      "threshold": 0.17500000000000004
+     }
+    ],
+    "baseline_ships12_lda_cohc": [
+     {
+      "rule": "native inner-F1 (locked)",
+      "family": "locked",
+      "score": "p_baseline_ships12_lda_cohc",
+      "threshold": 0.17500000000000004
+     }
+    ],
+    "wrps1_own": [
+     {
+      "rule": "public rule pu>=0.5 (== pl>=0.215)",
+      "family": "public",
+      "score": "wrps1_pl",
+      "threshold": 0.215
+     }
+    ],
+    "wrps1_f1": [
+     {
+      "rule": "inner-F1 on P (2018-19)",
+      "family": "rederived",
+      "score": "wrps1_p",
+      "threshold": 0.15000000000000002
+     }
+    ],
+    "ritcf_V1": [
+     {
+      "rule": "public rule 6/10 votes",
+      "family": "public",
+      "score": "ritcf_V1",
+      "threshold": 0.6
+     },
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V1",
+      "threshold": 0.9
+     }
+    ],
+    "ritcf_V2": [
+     {
+      "rule": "public rule 6/10 votes",
+      "family": "public",
+      "score": "ritcf_V2",
+      "threshold": 0.6
+     },
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V2",
+      "threshold": 0.9
+     }
+    ],
+    "ritcf_V3": [
+     {
+      "rule": "public rule 6/10 votes",
+      "family": "public",
+      "score": "ritcf_V3",
+      "threshold": 0.6
+     },
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V3",
+      "threshold": 1.0
+     }
+    ],
+    "ritcf_V4direct": [
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V4direct",
+      "threshold": 0.0931111127138137
+     }
+    ]
+   },
+   "A_cma30_control_cell": {
+    "ours": [
+     {
+      "rule": "val-F1 re-derived under this label",
+      "family": "rederived",
+      "score": "p_ours",
+      "threshold": 0.32500000000000007,
+      "derivation_n": 1302,
+      "derivation_n_RI": 61
+     }
+    ],
+    "baseline_lr": [
+     {
+      "rule": "val-F1 re-derived under this label",
+      "family": "rederived",
+      "score": "p_baseline_lr",
+      "threshold": 0.7750000000000002,
+      "derivation_n": 1302,
+      "derivation_n_RI": 61
+     }
+    ],
+    "baseline_lda": [
+     {
+      "rule": "val-F1 re-derived under this label",
+      "family": "rederived",
+      "score": "p_baseline_lda",
+      "threshold": 0.15000000000000002,
+      "derivation_n": 1302,
+      "derivation_n_RI": 61
+     }
+    ],
+    "baseline_ships12_lda": [
+     {
+      "rule": "val-F1 re-derived under this label",
+      "family": "rederived",
+      "score": "p_baseline_ships12_lda",
+      "threshold": 0.20000000000000007,
+      "derivation_n": 1302,
+      "derivation_n_RI": 61
+     }
+    ],
+    "baseline_ships12_lda_cohc": [
+     {
+      "rule": "val-F1 re-derived under this label",
+      "family": "rederived",
+      "score": "p_baseline_ships12_lda_cohc",
+      "threshold": 0.17500000000000004,
+      "derivation_n": 1302,
+      "derivation_n_RI": 61
+     }
+    ],
+    "wrps1_f1": [
+     {
+      "rule": "val-F1 on P (re-derived)",
+      "family": "rederived",
+      "score": "wrps1_p",
+      "threshold": 0.15000000000000002,
+      "derivation_n": 1302,
+      "derivation_n_RI": 61
+     }
+    ],
+    "wrps1_own": [
+     {
+      "rule": "public rule pu>=0.5 (== pl>=0.215)",
+      "family": "public",
+      "score": "wrps1_pl",
+      "threshold": 0.215
+     }
+    ],
+    "ritcf_V1": [
+     {
+      "rule": "public rule 6/10 votes",
+      "family": "public",
+      "score": "ritcf_V1",
+      "threshold": 0.6
+     },
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V1",
+      "threshold": 0.9
+     }
+    ],
+    "ritcf_V2": [
+     {
+      "rule": "public rule 6/10 votes",
+      "family": "public",
+      "score": "ritcf_V2",
+      "threshold": 0.6
+     },
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V2",
+      "threshold": 0.9
+     }
+    ],
+    "ritcf_V3": [
+     {
+      "rule": "public rule 6/10 votes",
+      "family": "public",
+      "score": "ritcf_V3",
+      "threshold": 0.6
+     },
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V3",
+      "threshold": 1.0
+     }
+    ],
+    "ritcf_V4direct": [
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V4direct",
+      "threshold": 0.0931111127138137
+     }
+    ]
+   },
+   "B": {
+    "ours": [
+     {
+      "rule": "val-F1 re-derived under this label",
+      "family": "rederived",
+      "score": "p_ours",
+      "threshold": 0.32500000000000007,
+      "derivation_n": 1302,
+      "derivation_n_RI": 93
+     }
+    ],
+    "baseline_lr": [
+     {
+      "rule": "val-F1 re-derived under this label",
+      "family": "rederived",
+      "score": "p_baseline_lr",
+      "threshold": 0.7000000000000003,
+      "derivation_n": 1302,
+      "derivation_n_RI": 93
+     }
+    ],
+    "baseline_lda": [
+     {
+      "rule": "val-F1 re-derived under this label",
+      "family": "rederived",
+      "score": "p_baseline_lda",
+      "threshold": 0.15000000000000002,
+      "derivation_n": 1302,
+      "derivation_n_RI": 93
+     }
+    ],
+    "baseline_ships12_lda": [
+     {
+      "rule": "val-F1 re-derived under this label",
+      "family": "rederived",
+      "score": "p_baseline_ships12_lda",
+      "threshold": 0.20000000000000007,
+      "derivation_n": 1302,
+      "derivation_n_RI": 93
+     }
+    ],
+    "baseline_ships12_lda_cohc": [
+     {
+      "rule": "val-F1 re-derived under this label",
+      "family": "rederived",
+      "score": "p_baseline_ships12_lda_cohc",
+      "threshold": 0.17500000000000004,
+      "derivation_n": 1302,
+      "derivation_n_RI": 93
+     }
+    ],
+    "wrps1_f1": [
+     {
+      "rule": "val-F1 on P (re-derived)",
+      "family": "rederived",
+      "score": "wrps1_p",
+      "threshold": 0.15000000000000002,
+      "derivation_n": 1302,
+      "derivation_n_RI": 93
+     }
+    ],
+    "wrps1_own": [
+     {
+      "rule": "public rule pu>=0.5 (== pl>=0.215)",
+      "family": "public",
+      "score": "wrps1_pl",
+      "threshold": 0.215
+     }
+    ],
+    "ritcf_V1": [
+     {
+      "rule": "public rule 6/10 votes",
+      "family": "public",
+      "score": "ritcf_V1",
+      "threshold": 0.6
+     },
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V1",
+      "threshold": 1.0
+     }
+    ],
+    "ritcf_V2": [
+     {
+      "rule": "public rule 6/10 votes",
+      "family": "public",
+      "score": "ritcf_V2",
+      "threshold": 0.6
+     },
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V2",
+      "threshold": 1.0
+     }
+    ],
+    "ritcf_V3": [
+     {
+      "rule": "public rule 6/10 votes",
+      "family": "public",
+      "score": "ritcf_V3",
+      "threshold": 0.6
+     },
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V3",
+      "threshold": 1.0
+     }
+    ],
+    "ritcf_V4": [
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V4",
+      "threshold": -0.4662413811683655
+     }
+    ],
+    "ritcf_V4direct": [
+     {
+      "rule": "val-F1 optimum (their val sweep)",
+      "family": "rederived",
+      "score": "ritcf_V4direct",
+      "threshold": 0.2388189572095872
+     }
+    ]
+   }
+  },
+  "derivation_samples": {
+   "A_native": {
+    "ours_inner_n": 1818,
+    "ours_inner_n_RI": 133,
+    "rule": "locked thresholds reused as-is"
+   },
+   "A_cma30_val": {
+    "n": 1302,
+    "n_RI": 61
+   },
+   "B_val": {
+    "n": 1302,
+    "n_RI": 93
+   },
+   "ritcf_val_sweeps": {
+    "A_and_A_cma30": "sweep_table_kt30.csv val split (CMA-30kt labels, their protocol)",
+    "B": "sweep_table.csv val split (CMA-25.27kt labels)"
+   }
+  },
+  "ritcf_val_f1_picks": {
+   "kt30": {
+    "V1": {
+     "knob": "vote_frac",
+     "threshold": 0.9,
+     "val_F1": 0.1564625850340136,
+     "val_POD": 0.7540983606557377,
+     "val_FARate": 0.3627450980392157,
+     "val_n": 1387,
+     "val_n_RI": 61,
+     "source": "data/ritcf_recon/sweep_table_kt30.csv (val split)"
+    },
+    "V2": {
+     "knob": "vote_frac",
+     "threshold": 0.9,
+     "val_F1": 0.1564625850340136,
+     "val_POD": 0.7540983606557377,
+     "val_FARate": 0.3627450980392157,
+     "val_n": 1387,
+     "val_n_RI": 61,
+     "source": "data/ritcf_recon/sweep_table_kt30.csv (val split)"
+    },
+    "V3": {
+     "knob": "vote_frac",
+     "threshold": 1.0,
+     "val_F1": 0.3673469387755102,
+     "val_POD": 0.7377049180327869,
+     "val_FARate": 0.1048265460030166,
+     "val_n": 1387,
+     "val_n_RI": 61,
+     "source": "data/ritcf_recon/sweep_table_kt30.csv (val split)"
+    },
+    "V4direct": {
+     "knob": "prob_thr",
+     "threshold": 0.0931111127138137,
+     "val_F1": 0.36,
+     "val_POD": 0.5901639344262295,
+     "val_FARate": 0.0776772247360482,
+     "val_n": 1387,
+     "val_n_RI": 61,
+     "source": "data/ritcf_recon/sweep_table_kt30.csv (val split)"
+    }
+   },
+   "25.27": {
+    "V1": {
+     "knob": "vote_frac",
+     "threshold": 1.0,
+     "val_F1": 0.22964509394572025,
+     "val_POD": 0.5913978494623656,
+     "val_FARate": 0.2557959814528593,
+     "val_n": 1387,
+     "val_n_RI": 93,
+     "source": "data/ritcf_recon/sweep_table.csv (val split)"
+    },
+    "V2": {
+     "knob": "vote_frac",
+     "threshold": 1.0,
+     "val_F1": 0.22964509394572025,
+     "val_POD": 0.5913978494623656,
+     "val_FARate": 0.2557959814528593,
+     "val_n": 1387,
+     "val_n_RI": 93,
+     "source": "data/ritcf_recon/sweep_table.csv (val split)"
+    },
+    "V3": {
+     "knob": "vote_frac",
+     "threshold": 1.0,
+     "val_F1": 0.3436123348017621,
+     "val_POD": 0.8387096774193549,
+     "val_FARate": 0.2187017001545595,
+     "val_n": 1387,
+     "val_n_RI": 93,
+     "source": "data/ritcf_recon/sweep_table.csv (val split)"
+    },
+    "V4": {
+     "knob": "mean_dist_thr",
+     "threshold": -0.4662413811683655,
+     "val_F1": 0.2336283185840708,
+     "val_POD": 0.7096774193548387,
+     "val_FARate": 0.3137557959814528,
+     "val_n": 1387,
+     "val_n_RI": 93,
+     "source": "data/ritcf_recon/sweep_table.csv (val split)"
+    },
+    "V4direct": {
+     "knob": "prob_thr",
+     "threshold": 0.2388189572095872,
+     "val_F1": 0.5196078431372549,
+     "val_POD": 0.5698924731182796,
+     "val_FARate": 0.0448222565687789,
+     "val_n": 1387,
+     "val_n_RI": 93,
+     "source": "data/ritcf_recon/sweep_table.csv (val split)"
+    }
+   }
+  },
+  "ritcf_val_f1_label_sensitivity_kt30_usa": {
+   "V1": {
+    "threshold": 0.9,
+    "val_F1": 0.3105590062111801,
+    "val_n": 1312,
+    "val_n_RI": 128,
+    "tp": 100,
+    "fp": 416,
+    "fn": 28,
+    "note": "same frozen val scores, USA-30kt labels (sensitivity only, not plotted)"
+   },
+   "V2": {
+    "threshold": 0.9,
+    "val_F1": 0.3105590062111801,
+    "val_n": 1312,
+    "val_n_RI": 128,
+    "tp": 100,
+    "fp": 416,
+    "fn": 28,
+    "note": "same frozen val scores, USA-30kt labels (sensitivity only, not plotted)"
+   },
+   "V3": {
+    "threshold": 1.0,
+    "val_F1": 0.44871794871794873,
+    "val_n": 1312,
+    "val_n_RI": 128,
+    "tp": 70,
+    "fp": 114,
+    "fn": 58,
+    "note": "same frozen val scores, USA-30kt labels (sensitivity only, not plotted)"
+   },
+   "V4direct": {
+    "threshold": 0.10334499180316925,
+    "val_F1": 0.48031496062992124,
+    "val_n": 1312,
+    "val_n_RI": 128,
+    "tp": 61,
+    "fp": 65,
+    "fn": 67,
+    "note": "same frozen val scores, USA-30kt labels (sensitivity only, not plotted)"
+   }
+  },
+  "special_cases": "RITCF V4 / V4direct are distance and probability heads; only the val-F1 point exists for them (no 6/10 vote rule). In figure A the RITCF val-F1 point is the one threshold that is NOT label-matched: the spec takes it from their own val sweep, whose labels are CMA-30kt. Their frozen val scores are relabelable, so the sensitivity block ritcf_val_f1_label_sensitivity_kt30_usa prices that choice; the plotted point stays with the spec (their own val labels)."
+ },
+ "labels": {
+  "A": "USA-30kt = our locked label (IBTrACS USA DV24>=30 kt)",
+  "A_cma30": "CMA-30kt: recon dataset_kt30 ri, same rows",
+  "B": "CMA-25.27kt: recon dataset ri (their definition)"
+ },
+ "metrics": [
+  "POD",
+  "FARate (POFD)",
+  "FARatio (=1-precision)",
+  "CSI",
+  "precision",
+  "ROC_AUC",
+  "PR_AUC",
+  "BSS_dev",
+  "POD_at_FARate9.4"
+ ],
+ "bss_reference": {
+  "clim_rate": 0.0791,
+  "note": "fixed development-period rate, never re-estimated per sample"
+ },
+ "iso_operating_point": {
+  "farate": 0.094,
+  "method": "linear interpolation of the empirical POD-FARate staircase"
+ },
+ "paper_claim_anchor": {
+  "pod": 0.91,
+  "farate": 0.094,
+  "faratio": 0.587,
+  "n": 1149,
+  "source": "Wang, Yang & Li (2025) PNAS Table 1, reanalysis row"
+ },
+ "artifacts": [
+  "coverage.csv",
+  "fig_compare_cma_pofd.png",
+  "fig_compare_faratio.png",
+  "fig_compare_faratio_2021.png",
+  "fig_compare_pofd.png",
+  "fig_compare_pofd_2021.png",
+  "fig_compare_pr.png",
+  "fig_compare_roc.png",
+  "iso_pofd.csv",
+  "table_figA.csv",
+  "table_figB.csv",
+  "waterfall.csv"
+ ],
+ "figure_layout_checks": {
+  "fig_compare_pofd.png": {
+   "file": "fig_compare_pofd.png",
+   "axes": [
+    72.3,
+    224.4,
+    481.8,
+    510.5
+   ],
+   "legend_entries": 13,
+   "legend_outside_axes": true,
+   "legend_box": [
+    485.9,
+    315.1,
+    686.8,
+    510.5
+   ],
+   "text_annotations": 9,
+   "texts_inside_figure": true,
+   "drawn_lines": 4,
+   "artists_outside_axes": 0,
+   "labels_unplaced_fallback": 0
+  },
+  "fig_compare_faratio.png": {
+   "file": "fig_compare_faratio.png",
+   "axes": [
+    72.3,
+    224.4,
+    481.8,
+    510.5
+   ],
+   "legend_entries": 13,
+   "legend_outside_axes": true,
+   "legend_box": [
+    485.9,
+    315.1,
+    686.8,
+    510.5
+   ],
+   "text_annotations": 9,
+   "texts_inside_figure": true,
+   "drawn_lines": 4,
+   "artists_outside_axes": 0,
+   "labels_unplaced_fallback": 0
+  },
+  "fig_compare_cma_pofd.png": {
+   "file": "fig_compare_cma_pofd.png",
+   "axes": [
+    72.3,
+    224.4,
+    481.8,
+    510.5
+   ],
+   "legend_entries": 13,
+   "legend_outside_axes": true,
+   "legend_box": [
+    485.9,
+    315.1,
+    686.8,
+    510.5
+   ],
+   "text_annotations": 9,
+   "texts_inside_figure": true,
+   "drawn_lines": 4,
+   "artists_outside_axes": 0,
+   "labels_unplaced_fallback": 0
+  },
+  "fig_compare_pofd_2021.png": {
+   "file": "fig_compare_pofd_2021.png",
+   "axes": [
+    72.3,
+    224.4,
+    481.8,
+    510.5
+   ],
+   "legend_entries": 15,
+   "legend_outside_axes": true,
+   "legend_box": [
+    485.9,
+    285.4,
+    806.9,
+    510.5
+   ],
+   "text_annotations": 10,
+   "texts_inside_figure": true,
+   "drawn_lines": 5,
+   "artists_outside_axes": 0,
+   "labels_unplaced_fallback": 0
+  },
+  "fig_compare_faratio_2021.png": {
+   "file": "fig_compare_faratio_2021.png",
+   "axes": [
+    72.3,
+    224.4,
+    481.8,
+    510.5
+   ],
+   "legend_entries": 15,
+   "legend_outside_axes": true,
+   "legend_box": [
+    485.9,
+    285.4,
+    806.9,
+    510.5
+   ],
+   "text_annotations": 10,
+   "texts_inside_figure": true,
+   "drawn_lines": 5,
+   "artists_outside_axes": 0,
+   "labels_unplaced_fallback": 0
+  },
+  "fig_compare_roc.png": {
+   "file": "fig_compare_roc.png",
+   "axes": [
+    70.4,
+    220.0,
+    541.2,
+    500.5
+   ],
+   "legend_entries": 10,
+   "legend_outside_axes": true,
+   "legend_box": [
+    545.9,
+    360.3,
+    760.0,
+    500.5
+   ],
+   "text_annotations": 1,
+   "texts_inside_figure": true,
+   "drawn_lines": 11,
+   "artists_outside_axes": 0
+  },
+  "fig_compare_pr.png": {
+   "file": "fig_compare_pr.png",
+   "axes": [
+    70.4,
+    220.0,
+    541.2,
+    500.5
+   ],
+   "legend_entries": 10,
+   "legend_outside_axes": true,
+   "legend_box": [
+    545.9,
+    360.3,
+    752.1,
+    500.5
+   ],
+   "text_annotations": 1,
+   "texts_inside_figure": true,
+   "drawn_lines": 10,
+   "artists_outside_axes": 0
+  }
+ },
+ "declarations": [
+  "Secondary analysis only: our probabilities are the frozen holdout predictions, evaluated on a subset of rows and/or against a swapped label; no new forward pass, once-only protocol intact.",
+  "Every number inside one figure uses one row set, one label, one window and one metric recipe; model input/training differences are the object of comparison.",
+  "Figure A is a 3-way-intersection subset of the official 3,004-row test table; the official headline numbers are unchanged and remain in the main table.",
+  "Figure B thresholds are re-derived under CMA-25.27kt on val 2018-19 rows; the USA-30kt 0.225 threshold is not transplanted.",
+  "CVRI-Ens and the statistical baselines are evaluated across label sources in figure B: USA-30kt fit-period labels (2000-2017), inner-period labels (2018-2019), and CMA-25.27kt evaluation labels (2020-2021). RITCF uses CMA labels and is evaluated across label sources in figure A.",
+  "WRPS1's final coefficients and probability mapping were fitted on 2002-2021, overlapping figure B's two evaluation years and two years of figure A and the 2,892-row comparison.",
+  "RITCF variant V1 uses a rolling reference pool that admits within-test-year labels; this is the model's own protocol, carried here unchanged and flagged wherever V1 is read.",
+  "The paper claim (POD 91.0 / FARate 9.4 / FARatio 58.7, n=1,149) appears as an open external anchor only: different sample, different label pipeline, different evaluation code; it is not connected to any curve.",
+  "Figure B has only 66 RI rows: the binomial s.d. of POD is about 6 points at POD 0.5 (95% +-12 points), so smaller differences are not resolvable and no significance is claimed for them.",
+  "BSS uses the fixed development-period climatology 0.0791 as the reference rate."
+ ],
+ "self_checks": {
+  "figA_ours_native_POD": 0.6985645933014354,
+  "figA_ours_native_POD_vs_official_0.68": 0.01856459330143534,
+  "ours_inner_f1_reproduces_locked_0.225": 0.22500000000000003,
+  "baseline_inner_f1_vs_locked": {
+   "baseline_lr": {
+    "derived": 0.7000000000000003,
+    "locked": 0.7000000000000003,
+    "delta": 0.0
+   },
+   "baseline_lda": {
+    "derived": 0.10000000000000002,
+    "locked": 0.10000000000000002,
+    "delta": 0.0
+   },
+   "baseline_ships12_lda": {
+    "derived": 0.17500000000000004,
+    "locked": 0.17500000000000004,
+    "delta": 0.0
+   },
+   "baseline_ships12_lda_cohc": {
+    "derived": 0.17500000000000004,
+    "locked": 0.17500000000000004,
+    "delta": 0.0
+   }
+  },
+  "wrps1_inner_f1_usa": 0.15000000000000002,
+  "figB_ours_threshold_not_transplanted": {
+   "figA_locked": 0.22500000000000003,
+   "figB_rederived": [
+    0.32500000000000007
+   ]
+  },
+  "ritcf_610_POD_figA_USA": {
+   "ritcf_V1": 0.8995215311004785,
+   "ritcf_V2": 0.9234449760765551,
+   "ritcf_V3": 0.631578947368421,
+   "ritcf_V4direct": null
+  },
+  "ritcf_610_POD_figA_CMA": {
+   "ritcf_V1": 0.925,
+   "ritcf_V2": 0.9583333333333334,
+   "ritcf_V3": 0.7083333333333334,
+   "ritcf_V4direct": null
+  },
+  "ritcf_610_POD_USA_lt_CMA": {
+   "ritcf_V1": true,
+   "ritcf_V2": true,
+   "ritcf_V3": true,
+   "ritcf_V4direct": null
+  },
+  "ritcf_valF1_POD_figA_USA": {
+   "ritcf_V1": 0.7272727272727273,
+   "ritcf_V2": 0.6076555023923444,
+   "ritcf_V3": 0.33014354066985646,
+   "ritcf_V4direct": 0.40669856459330145
+  },
+  "jaccard_USA_vs_CMA_RI_rows_figA": 0.5302325581395348,
+  "label_agreement_figA": 0.9536271808999082,
+  "n_RI_figA_USA": 209,
+  "n_RI_figA_CMA30": 120,
+  "n_RI_figB_CMA25": 66,
+  "n_figA": 2178,
+  "n_figB": 949,
+  "figB_rows_subset_of_figA": true,
+  "figB_val_derivation": {
+   "n": 1302,
+   "n_RI": 93
+  },
+  "figA_cma_val_derivation": {
+   "n": 1302,
+   "n_RI": 61
+  },
+  "figA_subset_vs_official_3004": {
+   "ours": {
+    "POD": {
+     "official": 0.6802,
+     "figA_subset": 0.6986,
+     "delta": 0.0184
+    },
+    "FARate": {
+     "official": 0.0945,
+     "figA_subset": 0.1173,
+     "delta": 0.0228
+    },
+    "ROC_AUC": {
+     "official": 0.8997,
+     "figA_subset": 0.8901,
+     "delta": -0.0096
+    },
+    "PR_AUC": {
+     "official": 0.5178,
+     "figA_subset": 0.558,
+     "delta": 0.0402
+    },
+    "BSS_dev": {
+     "official": 0.259,
+     "figA_subset": 0.2862,
+     "delta": 0.0273
+    }
+   },
+   "baseline_lr": {
+    "POD": {
+     "official": 0.6486,
+     "figA_subset": 0.6459,
+     "delta": -0.0027
+    },
+    "FARate": {
+     "official": 0.1725,
+     "figA_subset": 0.1828,
+     "delta": 0.0103
+    },
+    "ROC_AUC": {
+     "official": 0.826,
+     "figA_subset": 0.8242,
+     "delta": -0.0018
+    },
+    "PR_AUC": {
+     "official": 0.2976,
+     "figA_subset": 0.3324,
+     "delta": 0.0348
+    },
+    "BSS_dev": {
+     "official": -2.0742,
+     "figA_subset": -1.4182,
+     "delta": 0.6559
+    }
+   },
+   "baseline_lda": {
+    "POD": {
+     "official": 0.7297,
+     "figA_subset": 0.7368,
+     "delta": 0.0071
+    },
+    "FARate": {
+     "official": 0.2502,
+     "figA_subset": 0.261,
+     "delta": 0.0109
+    },
+    "ROC_AUC": {
+     "official": 0.8131,
+     "figA_subset": 0.8126,
+     "delta": -0.0005
+    },
+    "PR_AUC": {
+     "official": 0.2781,
+     "figA_subset": 0.3145,
+     "delta": 0.0364
+    },
+    "BSS_dev": {
+     "official": 0.0976,
+     "figA_subset": 0.119,
+     "delta": 0.0214
+    }
+   },
+   "baseline_ships12_lda": {
+    "POD": {
+     "official": 0.473,
+     "figA_subset": 0.4785,
+     "delta": 0.0055
+    },
+    "FARate": {
+     "official": 0.0945,
+     "figA_subset": 0.1036,
+     "delta": 0.0091
+    },
+    "ROC_AUC": {
+     "official": 0.8127,
+     "figA_subset": 0.8181,
+     "delta": 0.0054
+    },
+    "PR_AUC": {
+     "official": 0.2659,
+     "figA_subset": 0.3034,
+     "delta": 0.0375
+    },
+    "BSS_dev": {
+     "official": 0.0947,
+     "figA_subset": 0.1072,
+     "delta": 0.0125
+    }
+   },
+   "baseline_ships12_lda_cohc": {
+    "POD": {
+     "official": 0.3468,
+     "figA_subset": 0.3541,
+     "delta": 0.0072
+    },
+    "FARate": {
+     "official": 0.0604,
+     "figA_subset": 0.0741,
+     "delta": 0.0138
+    },
+    "ROC_AUC": {
+     "official": 0.8201,
+     "figA_subset": 0.8232,
+     "delta": 0.0032
+    },
+    "PR_AUC": {
+     "official": 0.2763,
+     "figA_subset": 0.3092,
+     "delta": 0.0329
+    },
+    "BSS_dev": {
+     "official": 0.1048,
+     "figA_subset": 0.1023,
+     "delta": -0.0025
+    }
+   }
+  },
+  "figA_subset_max_abs_delta_POD": 0.0184,
+  "ritcf_val_f1_label_sensitivity_kt30": {
+   "V1": {
+    "threshold": 0.9,
+    "val_F1": 0.3105590062111801,
+    "val_n": 1312,
+    "val_n_RI": 128,
+    "tp": 100,
+    "fp": 416,
+    "fn": 28,
+    "note": "same frozen val scores, USA-30kt labels (sensitivity only, not plotted)"
+   },
+   "V2": {
+    "threshold": 0.9,
+    "val_F1": 0.3105590062111801,
+    "val_n": 1312,
+    "val_n_RI": 128,
+    "tp": 100,
+    "fp": 416,
+    "fn": 28,
+    "note": "same frozen val scores, USA-30kt labels (sensitivity only, not plotted)"
+   },
+   "V3": {
+    "threshold": 1.0,
+    "val_F1": 0.44871794871794873,
+    "val_n": 1312,
+    "val_n_RI": 128,
+    "tp": 70,
+    "fp": 114,
+    "fn": 58,
+    "note": "same frozen val scores, USA-30kt labels (sensitivity only, not plotted)"
+   },
+   "V4direct": {
+    "threshold": 0.10334499180316925,
+    "val_F1": 0.48031496062992124,
+    "val_n": 1312,
+    "val_n_RI": 128,
+    "tp": 61,
+    "fp": 65,
+    "fn": 67,
+    "note": "same frozen val scores, USA-30kt labels (sensitivity only, not plotted)"
+   }
+  }
+ },
+ "tables": {
+  "figA": "data/analysis/compare/table_figA.csv",
+  "figB": "data/analysis/compare/table_figB.csv",
+  "iso_pofd": "data/analysis/compare/iso_pofd.csv",
+  "waterfall": "data/analysis/compare/waterfall.csv",
+  "coverage": "data/analysis/compare/coverage.csv"
+ }
+}

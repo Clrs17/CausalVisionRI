@@ -1,0 +1,319 @@
+# HOLDOUT_MASKED_V1 — frozen 22-arm registry (technical configuration only).
+#
+# Reconstructed from the historical runners and per-arm training logs
+# (logs/train_ens_*.log "override:" lines, scripts/run_*_server.sh).  NO
+# historical metric was read while building this file: arm identity is the
+# architecture / weights / fine-tuning / temporal recipe only.
+#
+# The batch column restores each arm's original identity (no suite-wide
+# re-batching).  Weight and embedding-cache paths are held in `assets` as
+# roles; `src.arms.arm_overrides()` substitutes them so an arm cannot point at
+# a legacy checkpoint.
+#
+# Selection reads this registry: all 22 arms must complete, families and the
+# tie-break order come from here, and the registry hash is written into the
+# protocol lock.
+
+version: holdout_masked_v1
+n_arms: 22
+family_order: [lingbot_sf, lingbot_mf, mae_sf, mae_mf]
+
+assets:
+  weights:
+    # The WNP MAE weights are produced by scripts/pretrain_mae.py under
+    # config/holdout_masked_v1.yaml (mae.cache_dir = data/mae_cache_wnp_alltc_full,
+    # mae.out_dir = checkpoints/holdout_masked_v1/mae_wnp_alltc_full).  The
+    # versioned `mae_wnp_alltc_full` name keeps the server-side pre-all-TC
+    # `mae_wnp` weights, the legacy 375-system checkpoints and the QC-corpus
+    # `mae_wnp_alltc` weights (audit-only) out of the arm.
+    mae_wnp:
+      path: checkpoints/holdout_masked_v1/mae_wnp_alltc_full/mae_vit_s16_best.pt
+      kind: vit_mae
+      provenance: in-domain WNP all-TC MAE (725 systems), full multi-sensor HURSAT corpus (hursat_full_multisensor_v1), fit=2000-2017 / val=2018-2019
+    # The global MAE is pretrained on the full multi-sensor raw corpus
+    # (data/mae_cache_global_full, corpus hursat_full_multisensor_v1: every
+    # raw frame kept, non-physical TBB masked to NaN at build) under the
+    # versioned `mae_global_full` directory; the QC-corpus `mae_global_qc`
+    # weights and the pre-QC `mae_global` weights are audit-only, never packed.
+    mae_global:
+      path: checkpoints/holdout_masked_v1/mae_global_full/mae_vit_s16_best.pt
+      kind: vit_mae
+      provenance: global HURSAT full multi-sensor MAE (hursat_full_multisensor_v1), same clean split
+    lingbot_small:
+      path: external/lingbot
+      kind: lingbot
+      variant: small
+    lingbot_base:
+      path: external/lingbot-base
+      kind: lingbot
+      variant: base
+    lingbot_large:
+      path: external/lingbot-large
+      kind: lingbot
+      variant: large
+  frame_embeds:
+    # each cache must be produced from the matching weights role (provenance
+    # is enforced by scripts/precompute_frame_embeds.py)
+    lingbot_base:
+      path: data/frame_embeds/lingbot_base
+      from_weights_role: lingbot_base
+    lingbot_large:
+      path: data/frame_embeds/lingbot_large
+      from_weights_role: lingbot_large
+    mae_global_full_cls:
+      path: data/frame_embeds/holdout_masked_v1/mae_global_full_cls
+      from_weights_role: mae_global
+
+arms:
+  # ---- mae_sf ---------------------------------------------------------
+  - arm: ens_ep40
+    family: mae_sf
+    backbone: vit_mae
+    weights_role: mae_global
+    ft_mode: frozen
+    temporal: []
+    batch: 16
+    overrides:
+      model.vision.freeze_backbone: true
+
+  - arm: ens_ep40_srv
+    family: mae_sf
+    backbone: vit_mae
+    weights_role: mae_global
+    ft_mode: frozen
+    temporal: []
+    batch: 16
+    note: identical technical configuration to ens_ep40 (historical re-run)
+    overrides:
+      model.vision.freeze_backbone: true
+
+  - arm: ens_ep40ft
+    family: mae_sf
+    backbone: vit_mae
+    weights_role: mae_global
+    ft_mode: full
+    temporal: []
+    batch: 16
+    overrides:
+      model.vision.freeze_backbone: false
+
+  - arm: ens_v1
+    family: mae_sf
+    backbone: vit_mae
+    weights_role: mae_wnp
+    ft_mode: full
+    temporal: []
+    batch: 16
+    overrides:
+      model.vision.freeze_backbone: false
+
+  # ---- mae_mf ---------------------------------------------------------
+  - arm: ens_ep40_temp5
+    family: mae_mf
+    backbone: vit_mae
+    weights_role: mae_global
+    ft_mode: frozen
+    temporal: [-6, -12, -18, -24]
+    embeds_role: mae_global_full_cls
+    batch: 128
+    overrides:
+      model.vision.freeze_backbone: true
+
+  # ---- lingbot_sf -----------------------------------------------------
+  - arm: ens_lingbot
+    family: lingbot_sf
+    backbone: lingbot
+    weights_role: lingbot_small
+    ft_mode: frozen
+    temporal: []
+    batch: 16
+    overrides: {}
+
+  - arm: ens_lingbotB
+    family: lingbot_sf
+    backbone: lingbot
+    weights_role: lingbot_base
+    ft_mode: frozen
+    temporal: []
+    batch: 16
+    overrides: {}
+
+  - arm: ens_lingbotL
+    family: lingbot_sf
+    backbone: lingbot
+    weights_role: lingbot_large
+    ft_mode: frozen
+    temporal: []
+    batch: 16
+    overrides: {}
+
+  - arm: ens_lbB_lora16_sf
+    family: lingbot_sf
+    backbone: lingbot
+    weights_role: lingbot_base
+    ft_mode: lora
+    temporal: []
+    batch: 64
+    overrides:
+      model.vision.ft_mode: lora
+      model.vision.lora_r: 16
+      model.vision.lora_alpha: 32.0
+
+  - arm: ens_lbB_lpft4_sf
+    family: lingbot_sf
+    backbone: lingbot
+    weights_role: lingbot_base
+    ft_mode: lpft4
+    temporal: []
+    batch: 64
+    overrides:
+      model.vision.ft_mode: partial
+      model.vision.ft_blocks: 4
+      train.backbone_lr_scale: 0.1
+      train.lpft_warmup_epochs: 5
+
+  - arm: ens_lbB_partial4_sf
+    family: lingbot_sf
+    backbone: lingbot
+    weights_role: lingbot_base
+    ft_mode: partial4
+    temporal: []
+    batch: 64
+    overrides:
+      model.vision.ft_mode: partial
+      model.vision.ft_blocks: 4
+      train.backbone_lr_scale: 0.1
+
+  - arm: ens_lbL_lora16_sf
+    family: lingbot_sf
+    backbone: lingbot
+    weights_role: lingbot_large
+    ft_mode: lora
+    temporal: []
+    batch: 32
+    overrides:
+      model.vision.ft_mode: lora
+      model.vision.lora_r: 16
+      model.vision.lora_alpha: 32.0
+
+  - arm: ens_lbL_lpft4_sf
+    family: lingbot_sf
+    backbone: lingbot
+    weights_role: lingbot_large
+    ft_mode: lpft4
+    temporal: []
+    batch: 32
+    overrides:
+      model.vision.ft_mode: partial
+      model.vision.ft_blocks: 4
+      train.backbone_lr_scale: 0.1
+      train.lpft_warmup_epochs: 5
+
+  # ---- lingbot_mf -----------------------------------------------------
+  - arm: ens_lb_temp5
+    family: lingbot_mf
+    backbone: lingbot
+    weights_role: lingbot_base
+    ft_mode: frozen
+    temporal: [-6, -12, -18, -24]
+    embeds_role: lingbot_base
+    batch: 128
+    overrides:
+      model.vision.ft_mode: frozen
+
+  - arm: ens_lingbotL_temp5
+    family: lingbot_mf
+    backbone: lingbot
+    weights_role: lingbot_large
+    ft_mode: frozen
+    temporal: [-6, -12, -18, -24]
+    embeds_role: lingbot_large
+    batch: 128
+    overrides:
+      model.vision.ft_mode: frozen
+
+  - arm: ens_lbB_temp2
+    family: lingbot_mf
+    backbone: lingbot
+    weights_role: lingbot_base
+    ft_mode: frozen
+    temporal: [-6]
+    embeds_role: lingbot_base
+    batch: 128
+    overrides:
+      model.vision.ft_mode: frozen
+
+  - arm: ens_lbB_temp3
+    family: lingbot_mf
+    backbone: lingbot
+    weights_role: lingbot_base
+    ft_mode: frozen
+    temporal: [-6, -12]
+    embeds_role: lingbot_base
+    batch: 128
+    overrides:
+      model.vision.ft_mode: frozen
+
+  - arm: ens_lbB_temp5_attnpool
+    family: lingbot_mf
+    backbone: lingbot
+    weights_role: lingbot_base
+    ft_mode: frozen
+    temporal: [-6, -12, -18, -24]
+    embeds_role: lingbot_base
+    batch: 128
+    overrides:
+      model.vision.ft_mode: frozen
+      model.vision.temporal_pool: attnpool
+
+  - arm: ens_lbB_temp5_diff
+    family: lingbot_mf
+    backbone: lingbot
+    weights_role: lingbot_base
+    ft_mode: frozen
+    temporal: [-6, -12, -18, -24]
+    embeds_role: lingbot_base
+    batch: 128
+    overrides:
+      model.vision.ft_mode: frozen
+      model.vision.temporal_diff: true
+
+  - arm: ens_lbB_temp5_slim
+    family: lingbot_mf
+    backbone: lingbot
+    weights_role: lingbot_base
+    ft_mode: frozen
+    temporal: [-6, -12, -18, -24]
+    embeds_role: lingbot_base
+    batch: 128
+    overrides:
+      model.vision.ft_mode: frozen
+      model.vision.temporal_dim: 128
+      model.vision.temporal_dropout: 0.3
+
+  - arm: ens_lbB_temp5_diffslim
+    family: lingbot_mf
+    backbone: lingbot
+    weights_role: lingbot_base
+    ft_mode: frozen
+    temporal: [-6, -12, -18, -24]
+    embeds_role: lingbot_base
+    batch: 128
+    overrides:
+      model.vision.ft_mode: frozen
+      model.vision.temporal_diff: true
+      model.vision.temporal_dim: 128
+      model.vision.temporal_dropout: 0.3
+
+  - arm: ens_lbB_lora16_temp5
+    family: lingbot_mf
+    backbone: lingbot
+    weights_role: lingbot_base
+    ft_mode: lora
+    temporal: [-6, -12, -18, -24]
+    batch: 32
+    note: image path (LoRA adapters), no frozen embedding cache
+    overrides:
+      model.vision.ft_mode: lora
+      model.vision.lora_r: 16
+      model.vision.lora_alpha: 32.0

@@ -1,0 +1,929 @@
+{
+  "arm_artifacts": {
+    "ens_ep40": {
+      "checkpoint_sha256": "3df96c05654fc9aeee9e99cdec8fe4d2a52ceca2c0aacaa710a77bc271fbad30",
+      "config_json_sha256": "7bd997b9774c45dce0b524c905df9c462e0ee07f142a7254ee0a6e74d06813d1",
+      "config_sha256": "803484be5ffe5978d88844b3d82b4d44e1bd6ad397d6f30bd22b186cf06b5129",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.27499999999999997,
+      "npz_sha256": "9e26b4acc5e16a71e4ab7c1f216c1cd41790bb5ed6bc652ee06a77e8dc055d8e",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_ep40",
+      "run_id": "ens_ep40"
+    },
+    "ens_ep40_srv": {
+      "checkpoint_sha256": "3a1c4555287fbfe3f05cfaf0ac06465dd130fd6b2fbdfd61812414b896b425d9",
+      "config_json_sha256": "3cca5e2b17ebc959be231a4bd02b7c89110fbde5580ec6ff3fff337f81f76377",
+      "config_sha256": "637ccd75144a4b3ff0aa37edaa91dc495bd64cd338fad3b3d1f4722e2ec01a8c",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.27499999999999997,
+      "npz_sha256": "92365790654c86eb45367b327d405731f09eea6b9b26fa1ff667f943f299733b",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_ep40_srv",
+      "run_id": "ens_ep40_srv"
+    },
+    "ens_ep40_temp5": {
+      "checkpoint_sha256": "c59e7f1c637d99cc931115e555410de943934abe2054974dea5fe46bb762ea45",
+      "config_json_sha256": "203bae37264479eb741f465eaf6e21460dc6577db5e4b26c4730b150f3159d83",
+      "config_sha256": "d9cf6a0b4b32ccc6ac422f527c99312994a008327abbed539be342d763bc159a",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": "data/frame_embeds/holdout_masked_v1/mae_global_full_cls",
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.175,
+      "npz_sha256": "e0fc2b7f139710633d424bd9d3b2a7e96d97239a06d6d4902a9fa4c183f77ae2",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_ep40_temp5",
+      "run_id": "ens_ep40_temp5"
+    },
+    "ens_ep40ft": {
+      "checkpoint_sha256": "aa9c20a6f377ed77151153d44912f7e5690e28ea88fb76437d81b1e18e145404",
+      "config_json_sha256": "f7241840a6b23562a836c18d3f0465f777c9abe49d0079ae1296eab716ca8542",
+      "config_sha256": "40a164d88bb15cec1304908803bb2de29e06e145034de28d3e1bbf75fd87bed0",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.25,
+      "npz_sha256": "621ed9a235d627576c1ccd2096515492763056341289e377abf182ffec8e56bc",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_ep40ft",
+      "run_id": "ens_ep40ft"
+    },
+    "ens_lbB_lora16_sf": {
+      "checkpoint_sha256": "5d267f203ef63a4249ac0fea4cd1eac007ea3a61f0d2c933c469178bf47b67e3",
+      "config_json_sha256": "63ce5a30d30b06bd4af618135472514936ea9e9d875902c4fdda4808edbd7fd4",
+      "config_sha256": "9c8fbf30eaa153609ec6b864de197095d1c3bf8d8c4e90323ea4d5e1cfa3e5ab",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.2,
+      "npz_sha256": "5d3c5a9b1c949abfcc190052f283c104c879748d58dd0cf456d9112ec63cf1c7",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_lora16_sf",
+      "run_id": "ens_lbB_lora16_sf"
+    },
+    "ens_lbB_lora16_temp5": {
+      "checkpoint_sha256": "7016f4575607d79ad0731f8af7175db011b3fa8201982ca44e708a6c2e10fdbe",
+      "config_json_sha256": "0c01bfd0333f2953fb877b3fedc9f4b8db11dd1d038091fb1fcab4ebe9a01b2b",
+      "config_sha256": "97c3cf569a55cb063d3b64f0f811ebf2306c18c308ebdfd0d2bdb6d4a13f919b",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.25,
+      "npz_sha256": "1600833fa082d6e835a425d80970270b64bae155183d1373710ae6463422a4ee",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_lora16_temp5",
+      "run_id": "ens_lbB_lora16_temp5"
+    },
+    "ens_lbB_lpft4_sf": {
+      "checkpoint_sha256": "1d58652793a6f3d6742e7a9cb0a310af00caa2963f754b9477bcbcb2ba66542f",
+      "config_json_sha256": "4871e5d453be5869e18c3ab032ae2a600e636c806c05725287b8ead60d0bc86e",
+      "config_sha256": "e5d51fb241f3d231e27e6fa0d675da2405c668a5a158faeecbb3b039e90a773c",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.125,
+      "npz_sha256": "254c20ada73ea1c91bd76cd3eaad3630b0c3a0b354304b07e9a0f8d9d2f250fc",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_lpft4_sf",
+      "run_id": "ens_lbB_lpft4_sf"
+    },
+    "ens_lbB_partial4_sf": {
+      "checkpoint_sha256": "bc6a6ce82a66d582c4604c9b89fdd8fc88c2ea90875f878d983d87a7dca32890",
+      "config_json_sha256": "f5af32e263761ada70cb984c08dd7f7dcaf180e2f5876a234d70b4c276533a59",
+      "config_sha256": "89f92a6ce6fe3a32fd706f87634541541836608e84ad8edfc809033a0799953d",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.15,
+      "npz_sha256": "da30bd173be1054a42375ad34ec727b68a093826dee93ed079ba769385a3980d",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_partial4_sf",
+      "run_id": "ens_lbB_partial4_sf"
+    },
+    "ens_lbB_temp2": {
+      "checkpoint_sha256": "11bb425280257438130dcaa909f5e214317d6099ad7d58a4d9fa1c5d8ca0ebeb",
+      "config_json_sha256": "435aaaf9ba0195a8c598318ff72d301432887bd9cfcb82c165a5a4a14944e553",
+      "config_sha256": "2885bfa5e5b544760c83a953c8fe886f31ee09dca12f7a2e58d0ee21a79c6a5c",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": "data/frame_embeds/lingbot_base",
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.22499999999999998,
+      "npz_sha256": "64a7c8c3fd12068caf63a640a6c216b776d15518d425707e2d073bb94e7fdce3",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_temp2",
+      "run_id": "ens_lbB_temp2"
+    },
+    "ens_lbB_temp3": {
+      "checkpoint_sha256": "e81984bba4a04290f759fe6a657777129c13b7ade1eaad1c393b669fbe6bffac",
+      "config_json_sha256": "1f8d0c5e17fcf11ce37cf2d937c8caa34c90686d938c24a23432ac1b82d1ecde",
+      "config_sha256": "9b5114e1a1a681fba307826fc9b47a60c12a4eefd2dc062b26b82e67ce77ce9d",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": "data/frame_embeds/lingbot_base",
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.27499999999999997,
+      "npz_sha256": "8d57e6a5470c2625aad7dfb32cfee52ba20ac5660c5615a7b6ef46fc04f055da",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_temp3",
+      "run_id": "ens_lbB_temp3"
+    },
+    "ens_lbB_temp5_attnpool": {
+      "checkpoint_sha256": "8b460718637ea70e6435ad58ebb160f724b8d3df6303c01620822f0474130bf3",
+      "config_json_sha256": "a04bdd891872f0273d958ee6574451ed6acb7256d530246b0c0673c4eef2e3eb",
+      "config_sha256": "df7738008a55d2ea03cf9f14146311f22e40a9069987bfc5a675332eea60746d",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": "data/frame_embeds/lingbot_base",
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.22499999999999998,
+      "npz_sha256": "84adfdf947e985406b7ac9e2553996b97480ae65aa563d5cd77006f30ef9ceee",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_temp5_attnpool",
+      "run_id": "ens_lbB_temp5_attnpool"
+    },
+    "ens_lbB_temp5_diff": {
+      "checkpoint_sha256": "c9c470e3b468951a08510c5d03bca21f131e492b64029f72a44584090e81a28e",
+      "config_json_sha256": "5604983f1060a4d3f1a460065cea80b229d2cb1ce5fa3a2124af9768b691a332",
+      "config_sha256": "a2dd7d2f6146726e70d0b5c050e798c17215d2043876b887d250b4eeacb09d7d",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": "data/frame_embeds/lingbot_base",
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.32499999999999996,
+      "npz_sha256": "a9b05804bd0bca4c223af74807583b15f9534879b0d75e87f975a987a273e3cb",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_temp5_diff",
+      "run_id": "ens_lbB_temp5_diff"
+    },
+    "ens_lbB_temp5_diffslim": {
+      "checkpoint_sha256": "8db04e52b2fc1bb83909933cb099240276ac5f1612bf207cee4f5779f31c8629",
+      "config_json_sha256": "8fbbfeb45531f15f63e438df76d1f0fa7bf4b459c512a88f94312aac4a491eda",
+      "config_sha256": "3533961354540bdd3ac2c874900e082e48ed8550d51af0b787ee3e536b0f5bde",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": "data/frame_embeds/lingbot_base",
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.25,
+      "npz_sha256": "3c2a8f104c81fea1e285741a48a3ced5da7585d0f3826f3c21e92bb65c2102a7",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_temp5_diffslim",
+      "run_id": "ens_lbB_temp5_diffslim"
+    },
+    "ens_lbB_temp5_slim": {
+      "checkpoint_sha256": "4c7bbe6c1f76e8dad35243acf7aceee66eeb039b30cf55c5b794a302aed84d30",
+      "config_json_sha256": "773230d990bfcfe40844df26b47af8553eb950ab5673ced7e781411b01eb905b",
+      "config_sha256": "aad443ce525792dcfe539694e0dd4015ac3259d59483829895b7c1664cbf9181",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": "data/frame_embeds/lingbot_base",
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.25,
+      "npz_sha256": "871a1feb6cb628bfc24f1d63d5c8012488473fa5cc67c3f441cda6e68dcc8604",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_temp5_slim",
+      "run_id": "ens_lbB_temp5_slim"
+    },
+    "ens_lbL_lora16_sf": {
+      "checkpoint_sha256": "cdb82e73f23a26a62cd445913f7225bd1549a38ce208a9ecc06bd245ad484343",
+      "config_json_sha256": "2b3afb055d76accbcbe0bb8cb7e2377f73f675bc5b4a625eca716d64304c2ffd",
+      "config_sha256": "bf2129ed40f9a40846247b90aa472f9d9df7e8af7901b61723a9c2205bc78b7b",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.35,
+      "npz_sha256": "51e1917e4fd5378c6dd52d2559551a05eefd1fcebd370cf72166acf81c72472a",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbL_lora16_sf",
+      "run_id": "ens_lbL_lora16_sf"
+    },
+    "ens_lbL_lpft4_sf": {
+      "checkpoint_sha256": "217ab8d06fe5e5340d7a6378ae297b44082cc571c66867b5a661ef83b87b3b8f",
+      "config_json_sha256": "78b00001f853dfb7dab359cf232f71a7e0dc69ca7fef4c95001d6edad56a4a7f",
+      "config_sha256": "945dffd2f02b431d8d4c56a36896f8adf2ad4440fd00815478f2bf7b46d481f0",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.27499999999999997,
+      "npz_sha256": "121b13ae7055dcf0b0617ec505ad9efe754b0c819b8be8b43cadcc5971b94b40",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbL_lpft4_sf",
+      "run_id": "ens_lbL_lpft4_sf"
+    },
+    "ens_lb_temp5": {
+      "checkpoint_sha256": "95f5a261a3dbd08fc1411e69db34ac399ee754b8cdedcbb5d01384f2b23d2062",
+      "config_json_sha256": "612c1599e50f4fec2e5ba9a05c39fee842f0c1fff32ca9d2a71d62e03e9357d6",
+      "config_sha256": "47b2de340a83a54d8f0d6686104495fc1f8139668656426bee591edf5219b7be",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": "data/frame_embeds/lingbot_base",
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.2,
+      "npz_sha256": "e354980aa4749d34296d7ad311d6dc7faa8fb766409697fd1d298ea00d8a4d24",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lb_temp5",
+      "run_id": "ens_lb_temp5"
+    },
+    "ens_lingbot": {
+      "checkpoint_sha256": "35c808cafecf078c9f3200de39bd037f5c3dbcfc150b09864fe495d6f831dde8",
+      "config_json_sha256": "da64c1b3350c1252bf74b78015300c34493efd6a1fa795dbfc1a18132a763c29",
+      "config_sha256": "fb9efe18977dd6a794cdf746ff7fb91927b1cb087beed6ec75e03ba56ee367d9",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.3,
+      "npz_sha256": "736d26207755a5179719376433174c4337db033890cd0d129a9212c3344788d2",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lingbot",
+      "run_id": "ens_lingbot"
+    },
+    "ens_lingbotB": {
+      "checkpoint_sha256": "3f5d60e887ac44fcf643c639ed5f66e76aa18b43daec0a91c04fe13b13fbc64a",
+      "config_json_sha256": "c28b714f84c73a3a9ed2e7af2676b2d5c278116b1f61aed83c1a8e357fcd0c69",
+      "config_sha256": "e4b425aa60dcccec7a7eb4ed2b37bf1281cb36333c974b08c93a531178b5d98b",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.27499999999999997,
+      "npz_sha256": "046810e05c8aa0b3ee0e7497a6a807b14059c477004f579c35043072fe0f44a8",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lingbotB",
+      "run_id": "ens_lingbotB"
+    },
+    "ens_lingbotL": {
+      "checkpoint_sha256": "e01f25c18d6ca8efb74eb02c8e90c3e95ecedd8d96f304e52f785ec60257a5dc",
+      "config_json_sha256": "fe51cd6045b9d4d72e24c664c57c04d5a7a26d9f76ea09a1ebb04f52d6dbc2e4",
+      "config_sha256": "c07f59e73a9895aa9ad4cc19891712f8b3e60e6075ab627181ed5878d8196518",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.25,
+      "npz_sha256": "0353dae7e7fbee92981238ad0666aa4353e3bbec819f55993b4afb35ca86394f",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lingbotL",
+      "run_id": "ens_lingbotL"
+    },
+    "ens_lingbotL_temp5": {
+      "checkpoint_sha256": "0cbc8f4907981afd62d65118f769a0e48558293e6b6f980b358b68bab71eceaa",
+      "config_json_sha256": "03a6fbdc95189ed5f1f24dcf6b2b39d36ab220a168cf24c6efc459fa8d75b5d1",
+      "config_sha256": "5d6e9670d924432ed54cd441bf5fa956de4497cfdca6d8e5c8461afef65c0a4d",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": "data/frame_embeds/lingbot_large",
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.25,
+      "npz_sha256": "91bc79e24aaf920d1bf886d09aa1611a108cd40341a4fefec0c37196747545cb",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lingbotL_temp5",
+      "run_id": "ens_lingbotL_temp5"
+    },
+    "ens_v1": {
+      "checkpoint_sha256": "f8d73dfb69229e01f3518ebdb280f24deb9bbdb013bd059d5128b522c137077c",
+      "config_json_sha256": "ac72d02be536da7327cf8b46ce74bcf9d3902476f5f321d5515d6d6f796d8e16",
+      "config_sha256": "0019a2d76f0560dc6641804b7c18a37249d113ef8961bb74af435a2884d3b57b",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "inner_threshold": 0.22499999999999998,
+      "npz_sha256": "d22cb17f1ca0b50da178c241c1e32e2fe534aff81a09470a61b8bd6b42f43549",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_v1",
+      "run_id": "ens_v1"
+    }
+  },
+  "fixture": false,
+  "frozen_at": "2026-10-19T19:44:57.954008+00:00",
+  "gated_families": [
+    "mae_sf",
+    "mae_mf"
+  ],
+  "historical_duplicates": [
+    {
+      "arms": [
+        "ens_ep40",
+        "ens_ep40_srv"
+      ],
+      "policy": "retained as separate registered arms; no deduplication",
+      "reason": "identical technical configuration; historical re-run"
+    }
+  ],
+  "inner_pooled_bss_selected": 0.3324253078161288,
+  "kind": "selection",
+  "lock_sha256": "f5d8e4622da4d7ff1c25e03f0b1d8904569a219f98a29d3c9b96893b77c0491f",
+  "lock_version": 3,
+  "members": [
+    {
+      "checkpoint_sha256": "bc6a6ce82a66d582c4604c9b89fdd8fc88c2ea90875f878d983d87a7dca32890",
+      "config_json_sha256": "f5af32e263761ada70cb984c08dd7f7dcaf180e2f5876a234d70b4c276533a59",
+      "config_sha256": "89f92a6ce6fe3a32fd706f87634541541836608e84ad8edfc809033a0799953d",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "family": "lingbot_sf",
+      "inner_threshold": 0.15,
+      "npz_sha256": "da30bd173be1054a42375ad34ec727b68a093826dee93ed079ba769385a3980d",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_partial4_sf",
+      "run_id": "ens_lbB_partial4_sf",
+      "weight": 0.2
+    },
+    {
+      "checkpoint_sha256": "7016f4575607d79ad0731f8af7175db011b3fa8201982ca44e708a6c2e10fdbe",
+      "config_json_sha256": "0c01bfd0333f2953fb877b3fedc9f4b8db11dd1d038091fb1fcab4ebe9a01b2b",
+      "config_sha256": "97c3cf569a55cb063d3b64f0f811ebf2306c18c308ebdfd0d2bdb6d4a13f919b",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "family": "lingbot_mf",
+      "inner_threshold": 0.25,
+      "npz_sha256": "1600833fa082d6e835a425d80970270b64bae155183d1373710ae6463422a4ee",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_lora16_temp5",
+      "run_id": "ens_lbB_lora16_temp5",
+      "weight": 0.2
+    },
+    {
+      "checkpoint_sha256": "11bb425280257438130dcaa909f5e214317d6099ad7d58a4d9fa1c5d8ca0ebeb",
+      "config_json_sha256": "435aaaf9ba0195a8c598318ff72d301432887bd9cfcb82c165a5a4a14944e553",
+      "config_sha256": "2885bfa5e5b544760c83a953c8fe886f31ee09dca12f7a2e58d0ee21a79c6a5c",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": "data/frame_embeds/lingbot_base",
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "family": "lingbot_mf",
+      "inner_threshold": 0.22499999999999998,
+      "npz_sha256": "64a7c8c3fd12068caf63a640a6c216b776d15518d425707e2d073bb94e7fdce3",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_temp2",
+      "run_id": "ens_lbB_temp2",
+      "weight": 0.2
+    },
+    {
+      "checkpoint_sha256": "5d267f203ef63a4249ac0fea4cd1eac007ea3a61f0d2c933c469178bf47b67e3",
+      "config_json_sha256": "63ce5a30d30b06bd4af618135472514936ea9e9d875902c4fdda4808edbd7fd4",
+      "config_sha256": "9c8fbf30eaa153609ec6b864de197095d1c3bf8d8c4e90323ea4d5e1cfa3e5ab",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": null,
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "family": "lingbot_sf",
+      "inner_threshold": 0.2,
+      "npz_sha256": "5d3c5a9b1c949abfcc190052f283c104c879748d58dd0cf456d9112ec63cf1c7",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_lora16_sf",
+      "run_id": "ens_lbB_lora16_sf",
+      "weight": 0.2
+    },
+    {
+      "checkpoint_sha256": "4c7bbe6c1f76e8dad35243acf7aceee66eeb039b30cf55c5b794a302aed84d30",
+      "config_json_sha256": "773230d990bfcfe40844df26b47af8553eb950ab5673ced7e781411b01eb905b",
+      "config_sha256": "aad443ce525792dcfe539694e0dd4015ac3259d59483829895b7c1664cbf9181",
+      "data_assets": {
+        "frames_dir": "data/global_hursat/frames_qc",
+        "frames_index": "data/holdout_masked_v1/frames_index.parquet",
+        "ir_embeds_dir": "data/frame_embeds/lingbot_base",
+        "panel_parquet": "data/holdout_masked_v1/panel_fit0017.parquet",
+        "prior_manifest": "data/holdout_masked_v1/prior_manifest.json",
+        "storm_year_manifest": "data/phase1/processed_masked/holdout_fit0017/panel/sample_manifest.csv",
+        "tbb_norm": "data/holdout_masked_v1/tbb_norm_fit0017.json"
+      },
+      "family": "lingbot_mf",
+      "inner_threshold": 0.25,
+      "npz_sha256": "871a1feb6cb628bfc24f1d63d5c8012488473fa5cc67c3f441cda6e68dcc8604",
+      "prior_manifest_sha256": "ca36bbe685039554731ce1deb7d8ed8605f7743e8c038bf82fa7c925e0e3388f",
+      "run_dir": "data/runs/holdout_masked_v1/ens_lbB_temp5_slim",
+      "run_id": "ens_lbB_temp5_slim",
+      "weight": 0.2
+    }
+  ],
+  "protocol": "holdout_masked_v1",
+  "protocol_years": {
+    "fit_years": [
+      2000,
+      2017
+    ],
+    "inner_years": [
+      2018,
+      2019
+    ],
+    "test_years": [
+      2020,
+      2024
+    ]
+  },
+  "ranking": [
+    {
+      "arm": "ens_lbB_partial4_sf",
+      "family": "lingbot_sf",
+      "inner_mean": 0.2869639066747235,
+      "per_year": {
+        "2018": 0.2603923113246309,
+        "2019": 0.31353550202481606
+      },
+      "pooled_inner_bss": 0.2867603933634809,
+      "rank": 1,
+      "two_year_worst": 0.2603923113246309
+    },
+    {
+      "arm": "ens_lbB_lora16_temp5",
+      "family": "lingbot_mf",
+      "inner_mean": 0.31502851600152865,
+      "per_year": {
+        "2018": 0.3834252202503712,
+        "2019": 0.24663181175268611
+      },
+      "pooled_inner_bss": 0.3158019248314725,
+      "rank": 2,
+      "two_year_worst": 0.24663181175268611
+    },
+    {
+      "arm": "ens_lbB_temp2",
+      "family": "lingbot_mf",
+      "inner_mean": 0.2760843473423446,
+      "per_year": {
+        "2018": 0.32151896269156,
+        "2019": 0.23064973199312921
+      },
+      "pooled_inner_bss": 0.276624733401148,
+      "rank": 3,
+      "two_year_worst": 0.23064973199312921
+    },
+    {
+      "arm": "ens_lbB_lora16_sf",
+      "family": "lingbot_sf",
+      "inner_mean": 0.24782895611192013,
+      "per_year": {
+        "2018": 0.268178819578588,
+        "2019": 0.22747909264525223
+      },
+      "pooled_inner_bss": 0.24811336347689905,
+      "rank": 4,
+      "two_year_worst": 0.22747909264525223
+    },
+    {
+      "arm": "ens_lbB_temp5_slim",
+      "family": "lingbot_mf",
+      "inner_mean": 0.26271680573422934,
+      "per_year": {
+        "2018": 0.29886871350211586,
+        "2019": 0.22656489796634283
+      },
+      "pooled_inner_bss": 0.26316275419223634,
+      "rank": 5,
+      "two_year_worst": 0.22656489796634283
+    },
+    {
+      "arm": "ens_lbB_lpft4_sf",
+      "family": "lingbot_sf",
+      "inner_mean": 0.23789109749713644,
+      "per_year": {
+        "2018": 0.2563236520650449,
+        "2019": 0.21945854292922795
+      },
+      "pooled_inner_bss": 0.23815670974254333,
+      "rank": 6,
+      "two_year_worst": 0.21945854292922795
+    },
+    {
+      "arm": "ens_lingbotB",
+      "family": "lingbot_sf",
+      "inner_mean": 0.25650929549563095,
+      "per_year": {
+        "2018": 0.30070524111625796,
+        "2019": 0.21231334987500394
+      },
+      "pooled_inner_bss": 0.2570388415634659,
+      "rank": 7,
+      "two_year_worst": 0.21231334987500394
+    },
+    {
+      "arm": "ens_lbL_lpft4_sf",
+      "family": "lingbot_sf",
+      "inner_mean": 0.273139005631206,
+      "per_year": {
+        "2018": 0.3377254463146545,
+        "2019": 0.20855256494775753
+      },
+      "pooled_inner_bss": 0.27387725516523076,
+      "rank": 8,
+      "two_year_worst": 0.20855256494775753
+    },
+    {
+      "arm": "ens_lbB_temp5_attnpool",
+      "family": "lingbot_mf",
+      "inner_mean": 0.26377771706496755,
+      "per_year": {
+        "2018": 0.3193707483254459,
+        "2019": 0.20818468580448923
+      },
+      "pooled_inner_bss": 0.2644241167418804,
+      "rank": 9,
+      "two_year_worst": 0.20818468580448923
+    },
+    {
+      "arm": "ens_lbB_temp3",
+      "family": "lingbot_mf",
+      "inner_mean": 0.263680409236289,
+      "per_year": {
+        "2018": 0.3200399774984495,
+        "2019": 0.2073208409741285
+      },
+      "pooled_inner_bss": 0.26433472620836085,
+      "rank": 10,
+      "two_year_worst": 0.2073208409741285
+    },
+    {
+      "arm": "ens_lbB_temp5_diff",
+      "family": "lingbot_mf",
+      "inner_mean": 0.26388988334938046,
+      "per_year": {
+        "2018": 0.32081906396969584,
+        "2019": 0.20696070272906508
+      },
+      "pooled_inner_bss": 0.2645500557493087,
+      "rank": 11,
+      "two_year_worst": 0.20696070272906508
+    },
+    {
+      "arm": "ens_ep40ft",
+      "family": "mae_sf",
+      "inner_mean": 0.23527561134828184,
+      "per_year": {
+        "2018": 0.2641997721014563,
+        "2019": 0.2063514505951074
+      },
+      "pooled_inner_bss": 0.2356497148588924,
+      "rank": 12,
+      "two_year_worst": 0.2063514505951074
+    },
+    {
+      "arm": "ens_lb_temp5",
+      "family": "lingbot_mf",
+      "inner_mean": 0.24677861037064852,
+      "per_year": {
+        "2018": 0.2913064716092789,
+        "2019": 0.20225074913201813
+      },
+      "pooled_inner_bss": 0.24731254399488622,
+      "rank": 13,
+      "two_year_worst": 0.20225074913201813
+    },
+    {
+      "arm": "ens_lbL_lora16_sf",
+      "family": "lingbot_sf",
+      "inner_mean": 0.26181484839827074,
+      "per_year": {
+        "2018": 0.32222254335587397,
+        "2019": 0.2014071534406675
+      },
+      "pooled_inner_bss": 0.2625111109049876,
+      "rank": 14,
+      "two_year_worst": 0.2014071534406675
+    },
+    {
+      "arm": "ens_ep40_srv",
+      "family": "mae_sf",
+      "inner_mean": 0.24983238490169907,
+      "per_year": {
+        "2018": 0.3004839908763768,
+        "2019": 0.19918077892702135
+      },
+      "pooled_inner_bss": 0.25042918922129664,
+      "rank": 15,
+      "two_year_worst": 0.19918077892702135
+    },
+    {
+      "arm": "ens_ep40",
+      "family": "mae_sf",
+      "inner_mean": 0.24756484036520476,
+      "per_year": {
+        "2018": 0.2975235401449067,
+        "2019": 0.19760614058550285
+      },
+      "pooled_inner_bss": 0.24815472112786885,
+      "rank": 16,
+      "two_year_worst": 0.19760614058550285
+    },
+    {
+      "arm": "ens_lingbotL_temp5",
+      "family": "lingbot_mf",
+      "inner_mean": 0.2797862713825263,
+      "per_year": {
+        "2018": 0.366337468608525,
+        "2019": 0.19323507415652763
+      },
+      "pooled_inner_bss": 0.2807504530115875,
+      "rank": 17,
+      "two_year_worst": 0.19323507415652763
+    },
+    {
+      "arm": "ens_v1",
+      "family": "mae_sf",
+      "inner_mean": 0.23160736785337416,
+      "per_year": {
+        "2018": 0.28331244175323345,
+        "2019": 0.17990229395351487
+      },
+      "pooled_inner_bss": 0.23221684439272405,
+      "rank": 18,
+      "two_year_worst": 0.17990229395351487
+    },
+    {
+      "arm": "ens_lbB_temp5_diffslim",
+      "family": "lingbot_mf",
+      "inner_mean": 0.23062783112944896,
+      "per_year": {
+        "2018": 0.28495642196858284,
+        "2019": 0.17629924029031507
+      },
+      "pooled_inner_bss": 0.23126446907939002,
+      "rank": 19,
+      "two_year_worst": 0.17629924029031507
+    },
+    {
+      "arm": "ens_lingbot",
+      "family": "lingbot_sf",
+      "inner_mean": 0.25478193892125467,
+      "per_year": {
+        "2018": 0.3351553334028696,
+        "2019": 0.1744085444396397
+      },
+      "pooled_inner_bss": 0.25568486562965687,
+      "rank": 20,
+      "two_year_worst": 0.1744085444396397
+    },
+    {
+      "arm": "ens_lingbotL",
+      "family": "lingbot_sf",
+      "inner_mean": 0.22905049206445144,
+      "per_year": {
+        "2018": 0.2872193022256443,
+        "2019": 0.1708816819032586
+      },
+      "pooled_inner_bss": 0.22972690222071068,
+      "rank": 21,
+      "two_year_worst": 0.1708816819032586
+    },
+    {
+      "arm": "ens_ep40_temp5",
+      "family": "mae_mf",
+      "inner_mean": 0.20209800907146425,
+      "per_year": {
+        "2018": 0.2501902124282067,
+        "2019": 0.15400580571472178
+      },
+      "pooled_inner_bss": 0.2026731368131648,
+      "rank": 22,
+      "two_year_worst": 0.15400580571472178
+    }
+  ],
+  "registry": {
+    "family_order": [
+      "lingbot_sf",
+      "lingbot_mf",
+      "mae_sf",
+      "mae_mf"
+    ],
+    "n_arms": 22,
+    "path": "config/arms_holdout_v1.yaml",
+    "sha256": "c03046596b5051e3cf0207e3f00de714a277b5e864ef7a98f0923a99fac97f33"
+  },
+  "release_reissue": {
+    "path_rewrites": 27,
+    "reason": "phase-1 data paths rewritten from the sibling checkout to data/phase1/; no numeric value was changed",
+    "reissued_at": "2026-10-23T07:39:39.954477+00:00",
+    "superseded_lock_sha256": "d8b4355665e88e88c596a9dae37a74371500f6b1c90bc2c2a54fa3bbc0f78346"
+  },
+  "runs_root": "data/runs/holdout_masked_v1",
+  "selection_rule": {
+    "family_gate": 8,
+    "family_order": [
+      "lingbot_sf",
+      "lingbot_mf",
+      "mae_sf",
+      "mae_mf"
+    ],
+    "inner_years": [
+      2018,
+      2019
+    ],
+    "k": 5,
+    "max_arms_truncation": false,
+    "n_arms": 22,
+    "nnls": false,
+    "score": "two_year_worst_year_bss",
+    "threshold": "f1_on_selected_blended_inner_probability",
+    "tie_break": [
+      "inner_mean_bss_desc",
+      "worst_year_bss",
+      "family_order",
+      "arm_name"
+    ],
+    "weights": "uniform"
+  },
+  "sensitivity": {
+    "all22": {
+      "members": [
+        "ens_lbB_partial4_sf",
+        "ens_lbB_lora16_temp5",
+        "ens_lbB_temp2",
+        "ens_lbB_lora16_sf",
+        "ens_lbB_temp5_slim",
+        "ens_lbB_lpft4_sf",
+        "ens_lingbotB",
+        "ens_lbL_lpft4_sf",
+        "ens_lbB_temp5_attnpool",
+        "ens_lbB_temp3",
+        "ens_lbB_temp5_diff",
+        "ens_ep40ft",
+        "ens_lb_temp5",
+        "ens_lbL_lora16_sf",
+        "ens_ep40_srv",
+        "ens_ep40",
+        "ens_lingbotL_temp5",
+        "ens_v1",
+        "ens_lbB_temp5_diffslim",
+        "ens_lingbot",
+        "ens_lingbotL",
+        "ens_ep40_temp5"
+      ],
+      "pooled_inner_bss": 0.299672070583481,
+      "threshold": 0.20000000000000007
+    },
+    "k4": {
+      "members": [
+        "ens_lbB_partial4_sf",
+        "ens_lbB_lora16_temp5",
+        "ens_lbB_temp2",
+        "ens_lbB_lora16_sf"
+      ],
+      "pooled_inner_bss": 0.3407875525601586,
+      "threshold": 0.22500000000000003
+    },
+    "k6": {
+      "members": [
+        "ens_lbB_partial4_sf",
+        "ens_lbB_lora16_temp5",
+        "ens_lbB_temp2",
+        "ens_lbB_lora16_sf",
+        "ens_lbB_temp5_slim",
+        "ens_lbB_lpft4_sf"
+      ],
+      "pooled_inner_bss": 0.32921298686877387,
+      "threshold": 0.22500000000000003
+    }
+  },
+  "test_output_dir": "data/test/holdout_masked_v1",
+  "test_receipt": "data/test/holdout_masked_v1/test_receipt.json",
+  "threshold": 0.22500000000000003
+}
